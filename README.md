@@ -1,6 +1,6 @@
 # Wedding Invitation
 
-Static wedding invitation based on the supplied HTML design. It can be deployed to GitHub Pages, Netlify, Vercel, or any static host.
+Vite-powered wedding invitation based on the supplied HTML design. The current visual markup stays in `index.html` while Vite provides the development server and production build pipeline. It can be deployed to GitHub Pages, Netlify, Vercel, or any static host.
 
 ## RSVP + wishes setup
 
@@ -14,16 +14,23 @@ The invitation uses a Google Sheet as the source of truth:
 
 When the URL is left blank, the page uses browser `localStorage` so the design can still be previewed locally. Once configured, RSVP submissions are written to the spreadsheet and the wishes drawer reads approved-by-presence messages from the same sheet.
 
-## Local preview
+## Local development
 
-Because this is a static project, no build step is required:
+Install dependencies and start Vite:
 
 ```bash
-python3 -m http.server 4173
+npm install
+npm run dev
 ```
 
 Then open http://localhost:4173.
 
+Create a production build with:
+
+```bash
+npm run build
+```
+
 ## Deployment
 
-For GitHub Pages, push the repository and enable Pages with **GitHub Actions**; the included workflow handles deployment on every push to `main`. Netlify and Vercel can deploy the repository with no build command and no publish directory changes.
+For GitHub Pages, push the repository and enable Pages with **GitHub Actions**; the included workflow handles deployment on every push to `main`. Configure the workflow to publish `dist/` after the Vite build, or use Netlify/Vercel with build command `npm run build` and publish directory `dist`.
