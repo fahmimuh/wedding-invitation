@@ -239,6 +239,10 @@ body{
 /* ---------- Invitation Content ---------- */
 .invite{
   max-width:680px;
+  height:100svh;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  scroll-snap-type:y proximity;
   margin:0 auto;
   padding:60px 20px 60px;
   opacity:0;
@@ -356,6 +360,8 @@ body{
   display:flex;
   flex-direction:column;
   justify-content:center;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
 }
 .hero-kicker{
   font-family:'Jost',sans-serif;
