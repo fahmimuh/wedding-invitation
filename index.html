@@ -36,6 +36,10 @@ body{
   overflow-x:hidden;
   background:#FBF8F0;
 }
+body.envelope-locked{
+  height:100svh;
+  overflow:hidden;
+}
 
 .wi-root{
   font-family:'Lora',serif;
@@ -53,7 +57,12 @@ body{
 
 /* ---------- Envelope Scene ---------- */
 .envelope-scene{
-  min-height:100vh;
+  position:fixed;
+  inset:0;
+  z-index:20;
+  width:100%;
+  height:100svh;
+  min-height:100svh;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -1131,7 +1140,7 @@ body{
 </style>
 
 </head>
-<body>
+<body class="envelope-locked">
 <div class="wi-root">
 
   <div id="ytPlayer" style="position:absolute; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;"></div>
@@ -1376,6 +1385,7 @@ function openEnvelope(){
   playMusic();
   setTimeout(()=>{
     document.getElementById('envelopeScene').classList.add('hidden');
+    document.body.classList.remove('envelope-locked');
     const invite = document.getElementById('invite');
     invite.classList.add('show');
     invite.scrollIntoView({behavior:'smooth'});
