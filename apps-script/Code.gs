@@ -8,7 +8,7 @@
  *    Who has access: Anyone
  * 4. Paste the deployment URL into RSVP_API_URL in index.html.
  */
-const SHEET_ID = 'PASTE_GOOGLE_SHEET_ID_HERE';
+const SHEET_ID = '1fyeFN0AwDYss-tacaYtfdtAJsBL2YgHI7wRZexiEQjE';
 const SHEET_NAME = 'RSVP';
 
 function getSheet_() {
@@ -16,7 +16,7 @@ function getSheet_() {
   let sheet = spreadsheet.getSheetByName(SHEET_NAME);
   if (!sheet) sheet = spreadsheet.insertSheet(SHEET_NAME);
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Submitted at', 'Name', 'Attending', 'Guests', 'Message']);
+    sheet.appendRow(['No', 'Submitted at', 'Name', 'Attending', 'Guests', 'Message']);
     sheet.setFrozenRows(1);
   }
   return sheet;
@@ -27,11 +27,12 @@ function doGet() {
   const values = sheet.getDataRange().getValues();
   const entries = values.slice(1).map(function(row) {
     return {
-      submittedAt: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ''),
-      name: String(row[1] || ''),
-      attending: String(row[2]).toLowerCase() === 'true',
-      guests: Number(row[3] || 0),
-      message: String(row[4] || '')
+      no: Number(row[0] || 0),
+      submittedAt: row[1] instanceof Date ? row[1].toISOString() : String(row[1] || ''),
+      name: String(row[2] || ''),
+      attending: String(row[3]).toLowerCase() === 'true',
+      guests: Number(row[4] || 0),
+      message: String(row[5] || '')
     };
   }).filter(function(entry) { return entry.name; });
   return ContentService
@@ -45,7 +46,10 @@ function doPost(e) {
     return ContentService.createTextOutput(JSON.stringify({ok: false, error: 'Name is required'}))
       .setMimeType(ContentService.MimeType.JSON);
   }
-  getSheet_().appendRow([
+  const sheet = getSheet_();
+  const nextNo = sheet.getLastRow(); // row 1 = header, so first entry gets No 1
+  sheet.appendRow([
+    nextNo,
     new Date(),
     String(body.name).slice(0, 120),
     Boolean(body.attending),
