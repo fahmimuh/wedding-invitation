@@ -2258,6 +2258,9 @@ if(invitationGuest){
 }
 
 // Guest messages panel
+let messagesLoaded = false;
+let messagesLoading = null;
+
 function escapeHtml(str){
   const div = document.createElement('div');
   div.textContent = str;
@@ -2274,7 +2277,11 @@ async function toggleMessages(){
   await loadMessages();
 }
 
-async function loadMessages(){
+function loadMessages(force = false){
+  if(messagesLoading) return force ? messagesLoading.then(()=>loadMessages(true)) : messagesLoading;
+  if(messagesLoaded && !force) return Promise.resolve();
+  messagesLoaded = true;
+  messagesLoading = (async()=>{
   const panel = document.getElementById('messagesPanel');
   panel.innerHTML = '<div class="msg-empty">Memuat ucapan...</div>';
   try{
@@ -2305,7 +2312,11 @@ async function loadMessages(){
   }catch(err){
     panel.innerHTML = '<div class="msg-empty">Gagal memuat ucapan.</div>';
   }
+  })().finally(()=>{ messagesLoading = null; });
+  return messagesLoading;
 }
+
+loadMessages();
 
 async function submitRsvp(){
   const name = document.getElementById('rsvpName').value.trim();
@@ -2341,10 +2352,7 @@ async function submitRsvp(){
       ? "Terima kasih, kami tunggu kehadiran Anda."
       : "Terima kasih atas konfirmasinya, Anda akan sangat kami rindukan.";
     document.querySelector('.rsvp-form').replaceWith(successMessage);
-    const panel = document.getElementById('messagesPanel');
-    if(panel.classList.contains('open')){
-      loadMessages();
-    }
+    loadMessages(true);
   }catch(err){
     statusEl.textContent = 'Maaf, konfirmasi belum tersimpan. Silakan coba lagi.';
   }
