@@ -313,6 +313,9 @@ body.envelope-locked{
   background:var(--ivory) var(--bg-main) center center / cover no-repeat fixed;
   transition:width 0.9s cubic-bezier(.22,.6,.25,1), opacity 0.45s ease, transform 0.9s cubic-bezier(.22,.6,.25,1);
 }
+.letter-scene.hidden{
+  display:none;
+}
 
 .letter-paper-frame{
   position:relative;
@@ -443,7 +446,142 @@ body.envelope-locked{
   }
 }
 @media (max-width:999px){
-  /* Keep the same content composition on every viewport; only allow text to fit. */
+  .wi-root{
+    background:var(--ivory);
+  }
+  .invite{
+    padding:18px 0 44px;
+    background:var(--ivory);
+  }
+  .invite::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    height:100svh;
+    background:url('/d1ee4cf058b326a3bc3dd10580823076.jpg') center top / cover no-repeat;
+    z-index:0;
+    pointer-events:none;
+  }
+  .invite .section-divider{
+    display:none;
+  }
+  .invite .section{
+    margin:18px 20px;
+    padding:36px 24px 30px;
+    border-radius:20px;
+    background-color:rgba(251,248,240,0.5);
+    box-shadow:0 10px 28px -14px rgba(58,58,38,0.22);
+  }
+  .invite .section-hero{
+    min-height:62svh;
+    padding:36px 24px 44px;
+    background:rgba(251,248,240,0.5);
+  }
+  .invite .section-verse{
+    min-height:clamp(380px,46svh,500px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:48px 26px 44px;
+  }
+  .invite .arabic-text{
+    max-width:300px;
+    font-size:22px;
+    line-height:1.95;
+    margin-bottom:20px;
+  }
+  .invite .translation-text{
+    max-width:300px;
+    font-size:15px;
+    line-height:1.85;
+  }
+  .invite .verse-citation{
+    margin-top:18px;
+    font-size:10px;
+  }
+  .invite .section-intro{
+    min-height:390px;
+    padding:42px 26px 38px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .invite .intro-line{
+    max-width:300px;
+    font-size:15px;
+    line-height:1.8;
+    margin-bottom:34px;
+  }
+  .invite .person-name{
+    font-size:clamp(25px,3vw,30px);
+  }
+  .invite .person-block{
+    margin:22px 0;
+  }
+  .invite .person-parents{
+    margin-top:8px;
+    font-size:13px;
+    line-height:1.55;
+  }
+  .invite .amp{
+    font-size:34px;
+    margin:8px 0;
+  }
+  .invite .section:has(.event-card){
+    min-height:450px;
+    padding:38px 24px 34px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .invite .event-card{
+    max-width:none;
+    margin:18px 0 0;
+    padding:26px 18px 24px;
+    background:transparent;
+    border:0;
+  }
+  .invite .time-slots{
+    display:block;
+  }
+  .invite .time-slot{
+    padding:0;
+  }
+  .invite .time-slot + .time-slot{
+    border:0;
+    border-top:1px solid rgba(91,107,69,0.22);
+    margin-top:24px;
+    padding-top:20px;
+  }
+  .invite .time-slots::after{
+    display:none;
+  }
+  .invite .slot-detail,
+  .invite .venue-address{
+    font-size:15px;
+  }
+  .invite .section-card{
+    padding:34px 24px 28px;
+  }
+  .invite .section-card > .eyebrow{
+    font-size:13px;
+  }
+  .invite .rsvp-form{
+    gap:16px;
+  }
+  .invite .section-countdown{
+    padding:32px 20px;
+    background-color:transparent;
+  }
+  .invite .countdown{
+    gap:10px;
+  }
+  .invite .count-num{
+    font-size:clamp(30px,4vw,36px);
+  }
+  .invite .section-footer{
+    padding:34px 26px;
+  }
   .person-name,
   .person-parents{
     white-space:normal;
@@ -617,12 +755,18 @@ body.envelope-locked{
   transform:translateY(24px);
   transition:opacity 1.3s ease-out, transform 1.3s ease-out;
   position:relative;
-  background:var(--ivory) url('/d1ee4cf058b326a3bc3dd10580823076.jpg') center top / cover no-repeat fixed;
+  background:var(--ivory) url('/d1ee4cf058b326a3bc3dd10580823076.jpg') center top / cover no-repeat;
   overflow:visible;
 }
 .invite.show{
   opacity:1;
   transform:translateY(0);
+}
+@media (max-width:999px){
+  .invite,
+  .invite.show{
+    transform:none;
+  }
 }
 @media (min-width:1000px){
   .invite.desktop-invite{
@@ -1405,9 +1549,6 @@ body.envelope-locked{
   }
   .env-address .addr-guest{
     font-size:clamp(12px,4vw,16px);
-  }
-  .wi-root{
-    background-attachment:scroll;
   }
 }
 
