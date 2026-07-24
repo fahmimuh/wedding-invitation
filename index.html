@@ -786,10 +786,58 @@ body.envelope-locked{
 .hero-content{
   width:100%;
   max-width:680px;
-  margin:0 auto;
+  margin:72px auto 0;
   padding:0 20px;
   position:relative;
   z-index:1;
+}
+.hero-hanging-flower{
+  position:absolute;
+  top:0;
+  width:62%;
+  height:auto;
+  pointer-events:none;
+  z-index:0;
+  opacity:0;
+  translate:0 -40px;
+}
+.hero-hanging-flower.hf-left{
+  left:-6%;
+}
+.hero-hanging-flower.hf-right{
+  right:-6%;
+  transform:scaleX(-1);
+}
+.invite.show .hero-hanging-flower{
+  animation:heroPlantDropIn 1.2s ease-out 0.2s both;
+}
+@keyframes heroPlantDropIn{
+  from{ opacity:0; translate:0 -40px; }
+  to{ opacity:1; translate:0 0; }
+}
+.hero-grass{
+  position:absolute;
+  bottom:-5%;
+  width:62%;
+  height:auto;
+  pointer-events:none;
+  z-index:0;
+  opacity:0;
+  translate:0 40px;
+}
+.hero-grass.hg-left{
+  left:-6%;
+}
+.hero-grass.hg-right{
+  right:-6%;
+  transform:scaleX(-1);
+}
+.invite.show .hero-grass{
+  animation:heroGrassRiseIn 1.2s ease-out 0.2s both;
+}
+@keyframes heroGrassRiseIn{
+  from{ opacity:0; translate:0 40px; }
+  to{ opacity:1; translate:0 0; }
 }
 @media (min-width:768px){
   .section-hero{
@@ -1614,6 +1662,10 @@ body.envelope-locked{
 
 
     <div class="section section-hero">
+      <img class="hero-hanging-flower hf-left" src="/hanging-plant.png" alt="">
+      <img class="hero-hanging-flower hf-right" src="/hanging-plant.png" alt="">
+      <img class="hero-grass hg-left" src="/grass.png" alt="">
+      <img class="hero-grass hg-right" src="/grass.png" alt="">
       <div class="hero-content">
         <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
