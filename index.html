@@ -433,7 +433,7 @@ body.envelope-locked{
     background:var(--ivory);
   }
   .invite{
-    padding:18px 0 44px;
+    padding:20px 0 16px;
     background:var(--ivory);
   }
   .invite::before{
@@ -724,7 +724,7 @@ body.envelope-locked{
   width:100%;
   max-width:none;
   margin:0 auto;
-  padding:18px 0 44px;
+  padding:20px 0 16px;
   opacity:0;
   transform:translateY(24px);
   transition:opacity 1.3s ease-out, transform 1.3s ease-out;
@@ -766,6 +766,9 @@ body.envelope-locked{
 .section:last-child{
   margin-bottom:0;
 }
+.section:first-child{
+  margin-top:0;
+}
 
 .section-hero{
   position:relative;
@@ -790,54 +793,6 @@ body.envelope-locked{
   padding:0 20px;
   position:relative;
   z-index:1;
-}
-.hero-hanging-flower{
-  position:absolute;
-  top:0;
-  width:62%;
-  height:auto;
-  pointer-events:none;
-  z-index:0;
-  opacity:0;
-  translate:0 -40px;
-}
-.hero-hanging-flower.hf-left{
-  left:-6%;
-}
-.hero-hanging-flower.hf-right{
-  right:-6%;
-  transform:scaleX(-1);
-}
-.invite.show .hero-hanging-flower{
-  animation:heroPlantDropIn 1.2s ease-out 0.2s both;
-}
-@keyframes heroPlantDropIn{
-  from{ opacity:0; translate:0 -40px; }
-  to{ opacity:1; translate:0 0; }
-}
-.hero-grass{
-  position:absolute;
-  bottom:-5%;
-  width:62%;
-  height:auto;
-  pointer-events:none;
-  z-index:0;
-  opacity:0;
-  translate:0 40px;
-}
-.hero-grass.hg-left{
-  left:-6%;
-}
-.hero-grass.hg-right{
-  right:-6%;
-  transform:scaleX(-1);
-}
-.invite.show .hero-grass{
-  animation:heroGrassRiseIn 1.2s ease-out 0.2s both;
-}
-@keyframes heroGrassRiseIn{
-  from{ opacity:0; translate:0 40px; }
-  to{ opacity:1; translate:0 0; }
 }
 @media (min-width:768px){
   .section-hero{
@@ -1269,18 +1224,88 @@ body.envelope-locked{
   background:var(--olive);
   color:var(--ivory);
 }
-.calendar-alt{
-  text-align:center;
-  margin-bottom:26px;
+.mini-calendar{
+  background:var(--ivory-deep);
+  border-radius:18px;
+  padding:22px 18px;
+  max-width:300px;
+  margin:16px auto 0;
+  box-shadow:0 10px 26px -14px rgba(58,58,38,0.28);
+  border:1px solid rgba(91,107,69,0.16);
+  transform-origin:top center;
 }
-.calendar-alt a{
-  font-family:'Jost',sans-serif;
-  font-size:11px;
-  letter-spacing:0.04em;
+.mini-calendar.in-view{
+  animation:calendarRevealIn 0.9s cubic-bezier(.22,.6,.25,1) both;
+}
+@keyframes calendarRevealIn{
+  from{ opacity:0; transform:scale(0.82) rotateX(-16deg) translateY(-10px); }
+  60%{ opacity:1; transform:scale(1.03) rotateX(2deg) translateY(0); }
+  to{ opacity:1; transform:scale(1) rotateX(0deg) translateY(0); }
+}
+.mini-cal-header{
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.15rem;
   color:var(--brass-deep);
-  text-decoration:underline;
-  opacity:0.85;
-  cursor:pointer;
+  margin-bottom:14px;
+  letter-spacing:0.04em;
+}
+.mini-cal-grid{
+  display:grid;
+  grid-template-columns:repeat(7, 1fr);
+  gap:4px 2px;
+}
+.mini-cal-dow{
+  text-align:center;
+  font-family:'Jost',sans-serif;
+  font-size:0.6rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--olive);
+  opacity:0.7;
+  padding-bottom:6px;
+}
+.mini-cal-day{
+  position:relative;
+  aspect-ratio:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Lora',serif;
+  font-size:0.76rem;
+  color:var(--text);
+}
+.mini-cal-highlight{
+  color:var(--ivory);
+  font-weight:600;
+}
+.mini-cal-num{
+  position:relative;
+  z-index:1;
+}
+.mini-cal-heart{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:112%;
+  transform:translate(-50%,-50%);
+  z-index:0;
+}
+.mini-cal-heart svg{
+  width:100%;
+  height:auto;
+  display:block;
+  fill:var(--green-paper);
+  animation:calHeartBeat 1.6s ease-in-out infinite;
+  transform-origin:center;
+}
+@keyframes calHeartBeat{
+  0%, 100%{ transform:scale(1); }
+  15%{ transform:scale(1.18); }
+  30%{ transform:scale(1); }
+  45%{ transform:scale(1.12); }
+  60%{ transform:scale(1); }
 }
 
 /* RSVP */
@@ -1662,10 +1687,6 @@ body.envelope-locked{
 
 
     <div class="section section-hero">
-      <img class="hero-hanging-flower hf-left" src="/hanging-plant.png" alt="">
-      <img class="hero-hanging-flower hf-right" src="/hanging-plant.png" alt="">
-      <img class="hero-grass hg-left" src="/grass.png" alt="">
-      <img class="hero-grass hg-right" src="/grass.png" alt="">
       <div class="hero-content">
         <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
@@ -1759,7 +1780,61 @@ body.envelope-locked{
         <button class="submit-btn reveal-el scale-in" onclick="submitRsvp()">Kirim Konfirmasi</button>
         <div class="rsvp-status" id="rsvpStatus"></div>
       </div>
-      <button class="calendar-btn reveal-el" onclick="addToCalendar()" type="button">
+    </div>
+
+    <div class="section-divider" id="divider3b"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+
+    <div class="section section-card section-calendar">
+      <div class="mini-calendar reveal-el scale-in">
+        <div class="mini-cal-header">August 2026</div>
+        <div class="mini-cal-grid">
+          <div class="mini-cal-dow">S</div>
+          <div class="mini-cal-dow">M</div>
+          <div class="mini-cal-dow">T</div>
+          <div class="mini-cal-dow">W</div>
+          <div class="mini-cal-dow">T</div>
+          <div class="mini-cal-dow">F</div>
+          <div class="mini-cal-dow">S</div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div class="mini-cal-day">1</div>
+          <div class="mini-cal-day">2</div>
+          <div class="mini-cal-day">3</div>
+          <div class="mini-cal-day">4</div>
+          <div class="mini-cal-day">5</div>
+          <div class="mini-cal-day">6</div>
+          <div class="mini-cal-day">7</div>
+          <div class="mini-cal-day">8</div>
+          <div class="mini-cal-day">9</div>
+          <div class="mini-cal-day">10</div>
+          <div class="mini-cal-day">11</div>
+          <div class="mini-cal-day">12</div>
+          <div class="mini-cal-day">13</div>
+          <div class="mini-cal-day">14</div>
+          <div class="mini-cal-day">15</div>
+          <div class="mini-cal-day">16</div>
+          <div class="mini-cal-day">17</div>
+          <div class="mini-cal-day">18</div>
+          <div class="mini-cal-day">19</div>
+          <div class="mini-cal-day">20</div>
+          <div class="mini-cal-day">21</div>
+          <div class="mini-cal-day">22</div>
+          <div class="mini-cal-day mini-cal-highlight">
+            <span class="mini-cal-heart">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </span>
+            <span class="mini-cal-num">23</span>
+          </div>
+          <div class="mini-cal-day">24</div>
+          <div class="mini-cal-day">25</div>
+          <div class="mini-cal-day">26</div>
+          <div class="mini-cal-day">27</div>
+          <div class="mini-cal-day">28</div>
+          <div class="mini-cal-day">29</div>
+          <div class="mini-cal-day">30</div>
+          <div class="mini-cal-day">31</div>
+        </div>
+      </div>
+      <button class="calendar-btn reveal-el" onclick="addToGoogleCalendar()" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="5" width="18" height="16" rx="2"/>
           <line x1="3" y1="10" x2="21" y2="10"/>
@@ -1769,7 +1844,6 @@ body.envelope-locked{
         </svg>
         Tambahkan ke Kalender
       </button>
-      <div class="calendar-alt reveal-el fade-only"><a href="#" onclick="addToGoogleCalendar(); return false;">atau tambahkan ke Google Calendar</a></div>
     </div>
 
     <div class="section-divider" id="divider4"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
