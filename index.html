@@ -401,7 +401,7 @@ body.envelope-locked{
     max-width:none;
     height:100svh;
     margin:0;
-    padding:60px 0;
+    padding:20px 0;
     overflow-y:auto;
     overflow-x:hidden;
     background:transparent;
@@ -1981,7 +1981,6 @@ function openLetter(){
     initScrollReveal();
     typeHeroNames();
     document.getElementById('messagesToggle').classList.add('visible');
-    document.getElementById('inviteHeading').focus({preventScroll:true});
   };
   if(desktop){
     letterScene.classList.add('desktop-morph');
