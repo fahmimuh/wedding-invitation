@@ -461,9 +461,12 @@ body.envelope-locked{
     box-shadow:0 10px 28px -14px rgba(58,58,38,0.22);
   }
   .invite .section-hero{
-    min-height:calc(100svh - 16px);
+    min-height:100svh;
     padding:36px 24px 44px;
     background:rgba(251,248,240,0.5);
+    margin-left:0;
+    margin-right:0;
+    border-radius:0;
   }
   .invite .section-verse{
     min-height:clamp(380px,46svh,500px);
@@ -604,11 +607,14 @@ body.envelope-locked{
     box-shadow:0 10px 28px -14px rgba(58,58,38,0.22);
   }
   .invite.desktop-invite .section-hero{
-    min-height:calc(100svh - 16px);
+    min-height:100svh;
     padding:36px 24px 44px;
     background:rgba(251,248,240,0.5);
     backdrop-filter:none;
     -webkit-backdrop-filter:none;
+    margin-left:0;
+    margin-right:0;
+    border-radius:0;
   }
   .invite.desktop-invite .section-verse{
     min-height:clamp(380px,46svh,500px);
@@ -787,13 +793,18 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   margin-top:0;
 }
 
+.section.section-hero:first-child{
+  margin-top:-20px;
+}
 .section-hero{
   position:relative;
   overflow:hidden;
-  min-height:calc(100svh - 16px);
+  min-height:100svh;
   margin-bottom:24px;
+  margin-left:0;
+  margin-right:0;
   padding:36px 24px 44px;
-  border-radius:20px;
+  border-radius:0;
   background:rgba(251,248,240,0.6);
   backdrop-filter:none;
   -webkit-backdrop-filter:none;
