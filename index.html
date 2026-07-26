@@ -411,14 +411,16 @@ body.envelope-locked{
     transition:opacity 0.5s ease, transform 0.5s ease;
     box-sizing:border-box;
   }
-  .invite.desktop-invite::before{
+  .wi-root::before{
     content:'';
-    position:sticky;
-    top:-60px;
+    position:fixed;
+    inset:0;
     display:block;
-    width:100%;
+    left:auto;
+    right:0;
+    width:33.3333%;
     height:100svh;
-    margin:-60px 0 calc(-100svh + 60px);
+    margin:0;
     background:url('/d1ee4cf058b326a3bc3dd10580823076.jpg') center top / cover no-repeat;
     z-index:0;
     pointer-events:none;
