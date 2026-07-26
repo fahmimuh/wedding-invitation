@@ -750,9 +750,11 @@ body.envelope-locked{
     scroll-snap-type:y mandatory;
   }
 }
-html:has(.invite.show){scroll-snap-type:y mandatory;}
+html:has(.invite.show),
+body:has(.invite.show){scroll-snap-type:y mandatory;}
 @media (prefers-reduced-motion: reduce){
   html:has(.invite.show),
+  body:has(.invite.show),
   .invite.desktop-invite{scroll-snap-type:none;}
 }
 .section{
