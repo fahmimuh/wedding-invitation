@@ -602,6 +602,8 @@ body.envelope-locked{
     min-height:calc(100svh - 16px);
     padding:36px 24px 44px;
     background:rgba(251,248,240,0.5);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
   }
   .invite.desktop-invite .section-verse{
     min-height:clamp(380px,46svh,500px);
@@ -786,8 +788,8 @@ html:has(.invite.show){scroll-snap-type:y mandatory;}
   padding:36px 24px 44px;
   border-radius:20px;
   background:rgba(251,248,240,0.6);
-  backdrop-filter:blur(9px);
-  -webkit-backdrop-filter:blur(9px);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
   box-shadow:0 10px 28px -14px rgba(58,58,38,0.22);
   gap:8px;
   display:flex;
