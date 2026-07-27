@@ -1644,8 +1644,6 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 <body class="envelope-locked">
 <div class="wi-root">
 
-  <div id="ytPlayer" style="position:absolute; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;"></div>
-
   <button class="music-toggle muted" id="musicToggle" onclick="toggleMusic()" aria-label="Mute or unmute music">
     <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="#3E4A30" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 9v6h4l5 4V5L8 9H4z"/>
@@ -2022,55 +2020,61 @@ function openLetter(){
 
 // Music playback
 const musicToggle = document.getElementById('musicToggle');
-let ytIframe = null;
+let audioContext = null;
+let musicBuffer = null;
+let musicSource = null;
 let musicPlaying = false;
+let musicOffset = 0;
+let musicStartedAt = 0;
 
-function createYtIframe(){
-  ytIframe = document.createElement('iframe');
-  ytIframe.width = '1';
-  ytIframe.height = '1';
-  ytIframe.style.cssText = 'position:absolute; opacity:0; pointer-events:none;';
-  ytIframe.allow = 'autoplay; encrypted-media';
-  ytIframe.src = 'https://www.youtube.com/embed/Qli_yB6BQJY?autoplay=1&mute=0&loop=1&playlist=Qli_yB6BQJY&controls=0&rel=0&enablejsapi=1';
-  document.getElementById('ytPlayer').appendChild(ytIframe);
-  musicPlaying = true;
-  musicToggle.classList.remove('muted');
-}
-
-function ytCommand(func){
-  if(ytIframe && ytIframe.contentWindow){
-    ytIframe.contentWindow.postMessage(JSON.stringify({event:'command', func:func, args:[]}), '*');
+async function loadMusic(){
+  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  await audioContext.resume();
+  if(!musicBuffer){
+    const response = await fetch('/bg-song.mp3');
+    if(!response.ok) throw new Error(`Music load failed: ${response.status}`);
+    musicBuffer = await audioContext.decodeAudioData(await response.arrayBuffer());
   }
 }
 
-function playMusic(){
-  if(!ytIframe){
-    createYtIframe();
-  }else{
-    ytCommand('playVideo');
+function startMusicSource(){
+  musicSource = audioContext.createBufferSource();
+  musicSource.buffer = musicBuffer;
+  musicSource.loop = true;
+  musicSource.connect(audioContext.destination);
+  musicStartedAt = audioContext.currentTime;
+  musicSource.start(0, musicOffset);
+}
+
+async function playMusic(){
+  musicPlaying = true;
+  musicToggle.classList.remove('muted');
+  try{
+    await loadMusic();
+    if(musicPlaying && !musicSource) startMusicSource();
+  }catch(error){
+    console.error(error);
     musicPlaying = true;
-    musicToggle.classList.remove('muted');
+    toggleMusic();
   }
 }
 
 function toggleMusic(){
-  if(!ytIframe){
-    createYtIframe();
-    return;
-  }
   if(musicPlaying){
-    ytCommand('pauseVideo');
+    if(musicSource){
+      musicOffset = (musicOffset + audioContext.currentTime - musicStartedAt) % musicBuffer.duration;
+      musicSource.stop();
+      musicSource = null;
+    }
     musicPlaying = false;
     musicToggle.classList.add('muted');
   }else{
-    ytCommand('playVideo');
-    musicPlaying = true;
-    musicToggle.classList.remove('muted');
+    playMusic();
   }
 }
 
 window.addEventListener('pagehide', ()=>{
-  ytCommand('pauseVideo');
+  if(musicSource) musicSource.stop();
 });
 
 // Countdown (simple tick animation on change)
