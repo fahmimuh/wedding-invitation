@@ -2026,6 +2026,7 @@ let musicSource = null;
 let musicPlaying = false;
 let musicOffset = 0;
 let musicStartedAt = 0;
+let resumeMusicOnReturn = false;
 
 async function loadMusic(){
   audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
@@ -2073,8 +2074,26 @@ function toggleMusic(){
   }
 }
 
+function pauseMusic(){
+  if(!musicPlaying || !musicSource) return;
+  musicOffset = (musicOffset + audioContext.currentTime - musicStartedAt) % musicBuffer.duration;
+  musicSource.stop();
+  musicSource = null;
+}
+
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden){
+    resumeMusicOnReturn = musicPlaying;
+    pauseMusic();
+  }else if(resumeMusicOnReturn){
+    resumeMusicOnReturn = false;
+    playMusic();
+  }
+});
+
 window.addEventListener('pagehide', ()=>{
-  if(musicSource) musicSource.stop();
+  resumeMusicOnReturn = false;
+  pauseMusic();
 });
 
 // Countdown (simple tick animation on change)
