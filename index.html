@@ -2290,8 +2290,12 @@ async function toggleMessages(){
     panel.classList.remove('open');
     return;
   }
-  panel.classList.add('open');
-  await loadMessages();
+  await openMessages();
+}
+
+async function openMessages(force = false){
+  document.getElementById('messagesPanel').classList.add('open');
+  await loadMessages(force);
 }
 
 function loadMessages(force = false){
@@ -2369,7 +2373,7 @@ async function submitRsvp(){
       ? "Terima kasih, kami tunggu kehadiran Anda."
       : "Terima kasih atas konfirmasinya, Anda akan sangat kami rindukan.";
     document.querySelector('.rsvp-form').replaceWith(successMessage);
-    loadMessages(true);
+    if(msg) await openMessages(true);
   }catch(err){
     statusEl.textContent = 'Maaf, konfirmasi belum tersimpan. Silakan coba lagi.';
   }
