@@ -119,7 +119,7 @@ body.envelope-locked{
 
 .envelope-hint{
   font-family:'Jost',sans-serif;
-  font-weight:700;
+  font-weight:400;
   font-size:14px;
   letter-spacing:0.28em;
   text-transform:uppercase;
@@ -883,7 +883,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   50%{ transform:translateX(-50%) translateY(8px); }
 }
 .hero-kicker{
-  font-family:'Jost',sans-serif;
+  font-family:'Caveat','Brush Script MT',cursive;
   color:var(--olive);
   font-size:0.66rem;
   letter-spacing:0.26em;
@@ -1072,14 +1072,30 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   margin-top:12px;
 }
 
-.divider{
-  width:40px;
-  height:1px;
-  background:var(--olive);
-  opacity:0.5;
+.person-divider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:140px;
   margin:20px auto;
 }
-.divider.wide{width:80px;}
+.person-divider .divider-line{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(91,107,69,0.4), transparent);
+  background-size:200% 100%;
+  animation:dividerShimmer 6s ease-in-out infinite;
+}
+.person-divider .divider-dot{
+  width:6px;
+  height:6px;
+  flex-shrink:0;
+  background:var(--brass);
+  transform:rotate(45deg);
+  box-shadow:0 0 6px rgba(169,137,90,0.5);
+  animation:dividerPulse 3.6s ease-in-out infinite;
+}
 
 .person-block{margin:18px 0;}
 .person-name{
@@ -1745,7 +1761,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
         <div class="person-parents reveal-el fade-only">Putri dari Bapak M. Rudi Hidayat &amp; Ibu Woro Palupi U.</div>
       </div>
 
-      <div class="divider reveal-el scale-in"></div>
+      <div class="person-divider reveal-el scale-in"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
 
       <div class="person-block">
         <div class="person-name reveal-el from-right">Fahmi Muhammad Izzuddin</div>
