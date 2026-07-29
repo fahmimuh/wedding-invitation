@@ -915,6 +915,16 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   font-weight:500;
   line-height:0.72;
   letter-spacing:-0.04em;
+  opacity:0;
+}
+.invite.show .hero-name{
+  animation:heroFadeUp 0.9s ease-out both;
+}
+.invite.show #heroName1{
+  animation-delay:0.5s;
+}
+.invite.show #heroName2{
+  animation-delay:0.85s;
 }
 .hero-ampersand{
   font-family:'Cormorant Garamond',serif;
@@ -922,10 +932,9 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   font-size:2.2rem;
   line-height:1;
   opacity:0;
-  transition:opacity 0.6s ease;
 }
-.hero-ampersand.in-view{
-  opacity:1;
+.invite.show .hero-ampersand{
+  animation:heroFadeUp 0.9s ease-out 0.75s both;
 }
 .section.in-view{
   opacity:1;
@@ -1746,9 +1755,9 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
       <div class="hero-content">
         <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
-          <div class="hero-name" id="heroName1"></div>
+          <div class="hero-name" id="heroName1">Sultana</div>
           <div class="hero-ampersand" id="heroAmp">&amp;</div>
-          <div class="hero-name" id="heroName2"></div>
+          <div class="hero-name" id="heroName2">Fahmi</div>
         </div>
       </div>
       <div class="hero-scroll-cue" aria-hidden="true">
@@ -2007,17 +2016,6 @@ function openEnvelope(){
   }, 1900);
 }
 
-function typeHeroNames(){
-  const name1 = document.getElementById('heroName1');
-  const amp = document.getElementById('heroAmp');
-  const name2 = document.getElementById('heroName2');
-
-  typeWriter(name1, 'Sultana', 170, ()=>{
-    amp.classList.add('in-view');
-    typeWriter(name2, 'Fahmi', 170);
-  });
-}
-
 function openLetter(){
   const letterScene = document.getElementById('letterScene');
   if(letterScene.classList.contains('hidden') || letterScene.classList.contains('transitioning') || letterScene.dataset.completed === 'true') return;
@@ -2035,7 +2033,6 @@ function openLetter(){
     invite.classList.add('show');
     invite.scrollIntoView({behavior:reducedMotion ? 'auto' : 'smooth'});
     initScrollReveal();
-    typeHeroNames();
     setupMessagesToggleVisibility();
   };
   if(desktop){
