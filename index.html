@@ -418,6 +418,8 @@ body.envelope-locked{
     padding:20px 0;
     overflow-y:auto;
     overflow-x:hidden;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
     background:transparent;
     z-index:10;
     opacity:0;
@@ -438,6 +440,9 @@ body.envelope-locked{
     background:url('/main-background-mobile.png') center top / cover no-repeat;
     z-index:0;
     pointer-events:none;
+  }
+  .invite.desktop-invite::-webkit-scrollbar{
+    display:none;
   }
   .invite.desktop-invite.show{
     opacity:1;
