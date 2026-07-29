@@ -516,15 +516,19 @@ body.envelope-locked{
     margin-bottom:34px;
   }
   .invite .person-name{
-    font-size:clamp(19px,5.2vw,26px);
+    font-size:clamp(16px,4.7vw,22px);
   }
   .invite .person-block{
     margin:22px 0;
   }
   .invite .person-parents{
     margin-top:8px;
-    font-size:13px;
+    font-size:clamp(8px,2.55vw,11px);
     line-height:1.55;
+  }
+  .invite .section-intro .person-name,
+  .invite .section-intro .person-parents{
+    white-space:nowrap;
   }
   .invite .section:has(.event-card){
     min-height:450px;
@@ -663,18 +667,18 @@ body.envelope-locked{
     margin-bottom:34px;
   }
   .invite.desktop-invite .person-name{
-    font-size:clamp(25px,3vw,30px);
+    font-size:clamp(18px,1.7vw,22px);
     line-height:1.15;
-    white-space:normal;
+    white-space:nowrap;
   }
   .invite.desktop-invite .person-block{
     margin:22px 0;
   }
   .invite.desktop-invite .person-parents{
     margin-top:8px;
-    font-size:13px;
+    font-size:clamp(9px,0.85vw,11px);
     line-height:1.55;
-    white-space:normal;
+    white-space:nowrap;
   }
   .invite.desktop-invite .section:has(.event-card){
     min-height:450px;
