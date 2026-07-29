@@ -318,7 +318,7 @@ body.envelope-locked{
 }
 
 .letter-scene{
-  background:var(--ivory) var(--bg-main) center center / cover no-repeat fixed;
+  background:var(--ivory) url("/main-background-mobile.png") center top / cover no-repeat fixed;
   transition:width 0.9s cubic-bezier(.22,.6,.25,1), opacity 0.45s ease, transform 0.9s cubic-bezier(.22,.6,.25,1);
 }
 .letter-scene.hidden{
@@ -390,6 +390,9 @@ body.envelope-locked{
   text-shadow:0 1px 4px rgba(20,20,10,0.55);
 }
 @media (min-width:1000px){
+  .letter-scene{
+    background:var(--ivory) url("/main-background-desktop.avif") center center / cover no-repeat fixed;
+  }
   .letter-scene.desktop-morph{
     width:66.6667%;
     left:0;
@@ -432,7 +435,7 @@ body.envelope-locked{
     width:33.3333%;
     height:100svh;
     margin:0;
-    background:url('/main-background-mobile.png') center top / cover no-repeat;
+    background:url('/main-background-desktop.avif') center center / cover no-repeat;
     z-index:0;
     pointer-events:none;
   }
@@ -443,7 +446,7 @@ body.envelope-locked{
 }
 @media (max-width:999px){
   .wi-root{
-    background:var(--ivory);
+    background:var(--ivory) url('/main-background-mobile.png') center top / cover no-repeat fixed;
   }
   .invite{
     padding:20px 0 16px;
@@ -2030,6 +2033,7 @@ function openLetter(){
     invite.classList.add('desktop-invite');
     setTimeout(finish, duration);
   }else{
+    invite.classList.add('show');
     letterScene.classList.add('mobile-exit');
     setTimeout(finish, duration);
   }
