@@ -1445,6 +1445,23 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   transition:background 0.2s ease;
 }
 .submit-btn:hover{background:var(--olive);}
+.submit-btn:disabled{
+  cursor:not-allowed;
+  opacity:0.7;
+}
+.submit-btn.loading::after{
+  content:'';
+  display:inline-block;
+  width:12px;
+  height:12px;
+  margin-left:10px;
+  border:2px solid rgba(251,248,240,0.45);
+  border-top-color:var(--ivory);
+  border-radius:50%;
+  vertical-align:-2px;
+  animation:submitSpin 0.7s linear infinite;
+}
+@keyframes submitSpin{to{transform:rotate(360deg)}}
 .rsvp-status{
   font-family:'Jost',sans-serif;
   font-size:11px;
@@ -1844,7 +1861,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
           <label for="rsvpMsg">Ucapan &amp; Doa (opsional)</label>
           <textarea id="rsvpMsg" rows="3" placeholder="Tulis ucapan untuk kedua mempelai..."></textarea>
         </div>
-        <button class="submit-btn reveal-el scale-in" onclick="submitRsvp()">Kirim Konfirmasi</button>
+        <button class="submit-btn reveal-el scale-in" id="rsvpSubmit" onclick="submitRsvp()">Kirim Konfirmasi</button>
         <div class="rsvp-status" id="rsvpStatus"></div>
       </div>
     </div>
@@ -2340,6 +2357,8 @@ function loadMessages(force = false){
 loadMessages();
 
 async function submitRsvp(){
+  const submitBtn = document.getElementById('rsvpSubmit');
+  if(submitBtn.disabled) return;
   const name = document.getElementById('rsvpName').value.trim();
   const guests = document.getElementById('rsvpGuests').value;
   const msg = document.getElementById('rsvpMsg').value.trim();
@@ -2349,6 +2368,10 @@ async function submitRsvp(){
     statusEl.textContent = 'Mohon isi nama Anda.';
     return;
   }
+
+  submitBtn.disabled = true;
+  submitBtn.classList.add('loading');
+  submitBtn.textContent = 'Mengirim';
 
   const entry = {
     name, attending, guests: attending ? Number(guests) : 0, message: msg,
@@ -2376,6 +2399,9 @@ async function submitRsvp(){
     if(msg) await openMessages(true);
   }catch(err){
     statusEl.textContent = 'Maaf, konfirmasi belum tersimpan. Silakan coba lagi.';
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = 'Kirim Konfirmasi';
   }
 }
 
