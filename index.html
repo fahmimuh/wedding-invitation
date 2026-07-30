@@ -1501,14 +1501,6 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   background:rgba(91,107,69,0.08);
   cursor:not-allowed;
 }
-.field-hint,.char-count{
-  font:10px/1.4 'Jost',sans-serif;
-  color:var(--olive-deep);
-  opacity:0.75;
-  margin-top:5px;
-}
-.char-count{text-align:right;}
-
 /* Gift note footer */
 .section-footer{
   padding-top:56px;
@@ -1888,7 +1880,6 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
         <div class="field reveal-el">
           <label for="rsvpName">Nama Lengkap</label>
           <input type="text" id="rsvpName" maxlength="120" placeholder="Nama Anda">
-          <div class="field-hint" id="rsvpNameHint" hidden>Nama sesuai undangan — hubungi kami bila perlu diperbaiki.</div>
         </div>
         <div class="field reveal-el">
           <label>Apakah Anda Akan Hadir?</label>
@@ -1905,8 +1896,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
         </div>
         <div class="field reveal-el">
           <label for="rsvpMsg">Ucapan &amp; Doa (opsional)</label>
-          <textarea id="rsvpMsg" rows="3" maxlength="1000" placeholder="Tulis ucapan untuk kedua mempelai..." oninput="updateMessageCount()"></textarea>
-          <div class="char-count" id="rsvpMsgCount">0/1000</div>
+          <textarea id="rsvpMsg" rows="3" maxlength="1000" placeholder="Tulis ucapan untuk kedua mempelai..."></textarea>
         </div>
         <button class="submit-btn reveal-el scale-in" id="rsvpSubmit" onclick="submitRsvp()">Kirim Konfirmasi</button>
         <div class="rsvp-status" id="rsvpStatus" role="status" aria-live="polite"></div>
@@ -2344,12 +2334,6 @@ if(invitationGuest){
   rsvpName.value = invitationGuest;
   rsvpName.readOnly = true;
   rsvpName.setAttribute('aria-readonly', 'true');
-  document.getElementById('rsvpNameHint').hidden = false;
-}
-
-function updateMessageCount(){
-  const message = document.getElementById('rsvpMsg');
-  document.getElementById('rsvpMsgCount').textContent = message.value.length + '/1000';
 }
 
 // Guest messages panel
