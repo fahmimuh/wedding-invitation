@@ -7,7 +7,7 @@
  * Deploy as a Web app: execute as Me, access Anyone.
  */
 const SHEET_NAME = 'RSVP';
-const HEADERS = ['No', 'Submitted at', 'Name', 'Attending', 'Guests', 'Message', 'Submission ID', 'Approved'];
+const HEADERS = ['No', 'Submitted at', 'Name', 'Attending', 'Guests', 'Message', 'Submission ID'];
 
 function json_(value) {
   return ContentService.createTextOutput(JSON.stringify(value))
@@ -52,8 +52,7 @@ function doGet() {
     const columns = columnMap_(sheet);
     const values = sheet.getDataRange().getValues();
     const entries = values.slice(1).reverse().filter(function(row) {
-      return String(row[columns.Approved]).toLowerCase() === 'true' &&
-        String(row[columns.Message] || '').trim();
+      return String(row[columns.Message] || '').trim();
     }).map(function(row) {
       return {
         name: String(row[columns.Name] || ''),
@@ -119,8 +118,6 @@ function doPost(e) {
     row[columns.Guests] = entry.guests;
     row[columns.Message] = entry.message;
     row[columns['Submission ID']] = entry.submissionId;
-    row[columns.Approved] = false;
-
     if (rowNumber) sheet.getRange(rowNumber, 1, 1, row.length).setValues([row]);
     else sheet.appendRow(row);
     return json_({ok: true, updated: Boolean(rowNumber)});

@@ -11,9 +11,9 @@ The invitation uses a Google Sheet as the source of truth:
 3. In Apps Script, open **Project Settings → Script Properties** and add `SHEET_ID` with the spreadsheet ID as its value.
 4. Deploy the Apps Script as a **Web app**, executing as you and accessible to anyone.
 5. Copy the deployment URL into `RSVP_API_URL` near the top of [`index.html`](index.html).
-6. The script adds `Submission ID` and `Approved` columns. Mark `Approved` as `TRUE` only after reviewing a wish; the public GET endpoint returns approved `{name, message}` values only.
+6. The script adds a `Submission ID` column for duplicate-safe upserts. The public GET endpoint returns only `{name, message}` for rows with non-empty wishes.
 
-When the URL is left blank, the page uses browser `localStorage` so the design can still be previewed locally. Once configured, RSVP submissions are upserted by a browser-specific submission ID and the wishes drawer reads moderated messages from the same sheet.
+When the URL is left blank, the page uses browser `localStorage` so the design can still be previewed locally. Once configured, RSVP submissions are upserted by a browser-specific submission ID and every non-empty wish appears in the wishes drawer.
 
 ## Local development
 
