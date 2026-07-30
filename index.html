@@ -397,6 +397,17 @@ body.envelope-locked{
   color:var(--ivory);
   text-shadow:0 1px 4px rgba(20,20,10,0.55);
 }
+.envelope-hint{
+  border:0;
+  background:none;
+  cursor:pointer;
+  font:inherit;
+}
+.envelope-hint:focus-visible{
+  outline:2px solid currentColor;
+  outline-offset:5px;
+  border-radius:4px;
+}
 @media (min-width:1000px){
   .letter-scene{
     background:var(--ivory) url("/main-background-desktop.avif") center center / cover no-repeat fixed;
@@ -1772,7 +1783,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
           </div>
         </div>
       </div>
-      <div class="envelope-hint" id="envHint"></div>
+      <button class="envelope-hint" id="envHint" type="button" onclick="openEnvelope()" aria-label="Buka amplop undangan"></button>
     </div>
   </div>
 
@@ -1789,7 +1800,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
           <div class="letter-names" id="letterNames"></div>
         </div>
       </div>
-      <div class="envelope-hint letter-hint" id="letterHint"></div>
+      <button class="envelope-hint letter-hint" id="letterHint" type="button" onclick="openLetter()" aria-label="Buka isi undangan"></button>
     </div>
   </div>
 

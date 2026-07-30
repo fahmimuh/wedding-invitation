@@ -36,6 +36,14 @@ test('wax seal center tap opens the envelope at 375x812', async ({ page }) => {
   await openEnvelope(page);
 });
 
+test('Tap to open buttons open both invitation gates', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#envHint').click();
+  await expect(page.locator('#letterScene')).toBeVisible();
+  await page.locator('#letterHint').click();
+  await expect(page.locator('#invite')).toHaveClass(/show/);
+});
+
 test('completed letter layout reconciles across desktop breakpoint resize', async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 768 });
   await page.goto('/');
