@@ -1643,7 +1643,12 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   overflow-x:visible;
   padding:6px 4px;
   z-index:998;
+  visibility:hidden;
   pointer-events:none;
+}
+.messages-panel.open{
+  visibility:visible;
+  pointer-events:auto;
 }
 .messages-panel::-webkit-scrollbar{ display:none; }
 .msg-bubble{
@@ -1658,11 +1663,12 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   opacity:0;
   transform:translateY(8px) scale(0.94);
   transition:opacity 0.3s ease, transform 0.3s ease;
-  pointer-events:auto;
+  pointer-events:none;
 }
 .messages-panel.open .msg-bubble{
   opacity:1;
   transform:translateY(0) scale(1);
+  pointer-events:auto;
 }
 .msg-name{
   font-family:'Jost',sans-serif;
@@ -1726,7 +1732,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   <div class="envelope-scene" id="envelopeScene">
     <div class="envelope-wrap">
       <div class="envelope-heading" id="envHeading"></div>
-      <div class="envelope" id="envelope" onclick="openEnvelope()">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Buka amplop undangan" onclick="openEnvelope()" onkeydown="activateOnKey(event, openEnvelope)">
         <img class="envelope-flower flower-tr" src="/envelope-flower.png" alt="">
         <img class="envelope-flower flower-bl" src="/envelope-flower.png" alt="">
         <div class="env-body">
@@ -1754,7 +1760,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 
   <div class="envelope-scene letter-scene hidden" id="letterScene">
     <div class="envelope-wrap">
-      <div class="letter-paper-frame" id="letterPaperFrame" onclick="openLetter()">
+      <div class="letter-paper-frame" id="letterPaperFrame" role="button" tabindex="0" aria-label="Buka isi undangan" onclick="openLetter()" onkeydown="activateOnKey(event, openLetter)">
         <img class="letter-paper" id="letterPaper" src="/letter-paper.jpg" alt="Sealed letter">
         <div class="letter-text">
           <div class="letter-greeting" id="letterGreeting"></div>
@@ -2023,6 +2029,12 @@ function typeLetterContents(){
   });
 }
 
+function activateOnKey(event, action){
+  if(event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  action();
+}
+
 function openEnvelope(){
   const env = document.getElementById('envelope');
   if(env.classList.contains('open')) return;
@@ -2053,6 +2065,7 @@ function openLetter(){
     invite.scrollIntoView({behavior:reducedMotion ? 'auto' : 'smooth'});
     initScrollReveal();
     setupMessagesToggleVisibility();
+    reconcileCompletedLetter();
   };
   if(desktop){
     letterScene.classList.add('desktop-morph');
@@ -2064,6 +2077,24 @@ function openLetter(){
     setTimeout(finish, duration);
   }
 }
+
+const desktopInvitationMedia = window.matchMedia('(min-width:1000px)');
+function reconcileCompletedLetter(){
+  const letterScene = document.getElementById('letterScene');
+  if(letterScene.dataset.completed !== 'true' || letterScene.classList.contains('transitioning')) return;
+  const invite = document.getElementById('invite');
+  if(desktopInvitationMedia.matches){
+    letterScene.classList.remove('hidden', 'mobile-exit');
+    letterScene.classList.add('desktop-morph');
+    invite.classList.add('desktop-invite', 'show');
+  }else{
+    letterScene.classList.remove('desktop-morph', 'mobile-exit');
+    letterScene.classList.add('hidden');
+    invite.classList.remove('desktop-invite');
+    invite.classList.add('show');
+  }
+}
+desktopInvitationMedia.addEventListener('change', reconcileCompletedLetter);
 
 // Music playback
 const musicToggle = document.getElementById('musicToggle');
@@ -2334,7 +2365,6 @@ async function openMessages(force = false){
 function loadMessages(force = false){
   if(messagesLoading) return force ? messagesLoading.then(()=>loadMessages(true)) : messagesLoading;
   if(messagesLoaded && !force) return Promise.resolve();
-  messagesLoaded = true;
   messagesLoading = (async()=>{
   const panel = document.getElementById('messagesPanel');
   panel.innerHTML = '<div class="msg-empty">Memuat ucapan...</div>';
@@ -2348,11 +2378,13 @@ function loadMessages(force = false){
       entries = getLocalRsvps();
     }
     if(!entries || entries.length === 0){
+      messagesLoaded = true;
       panel.innerHTML = '<div class="msg-empty">Belum ada ucapan.</div>';
       return;
     }
     entries = entries.filter(e => e.message && e.message.trim());
     if(entries.length === 0){
+      messagesLoaded = true;
       panel.innerHTML = '<div class="msg-empty">Belum ada ucapan.</div>';
       return;
     }
@@ -2363,14 +2395,14 @@ function loadMessages(force = false){
         '<div class="msg-text">' + escapeHtml(e.message) + '</div>' +
       '</div>'
     )).join('');
+    messagesLoaded = true;
   }catch(err){
-    panel.innerHTML = '<div class="msg-empty">Gagal memuat ucapan.</div>';
+    messagesLoaded = false;
+    panel.innerHTML = '<div class="msg-empty">Gagal memuat ucapan. <button type="button" onclick="loadMessages(true)">Coba lagi</button></div>';
   }
   })().finally(()=>{ messagesLoading = null; });
   return messagesLoading;
 }
-
-loadMessages();
 
 async function submitRsvp(){
   const submitBtn = document.getElementById('rsvpSubmit');
