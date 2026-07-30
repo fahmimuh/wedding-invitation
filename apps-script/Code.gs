@@ -44,7 +44,10 @@ function columnMap_(sheet) {
 }
 
 function doGet() {
+  let lock;
   try {
+    lock = LockService.getScriptLock();
+    lock.waitLock(10000);
     const sheet = getSheet_();
     const columns = columnMap_(sheet);
     const values = sheet.getDataRange().getValues();
@@ -60,25 +63,32 @@ function doGet() {
     return json_(entries);
   } catch (error) {
     return json_({ok: false, error: String(error.message || error)});
+  } finally {
+    if (lock && lock.hasLock()) lock.releaseLock();
   }
+}
+
+function literal_(value) {
+  const text = String(value || '');
+  return /^[=+\-@]/.test(text) ? "'" + text : text;
 }
 
 function validateEntry_(body) {
   const name = String(body.name || '').trim();
   const message = String(body.message || '').trim();
-  const submissionId = String(body.submissionId || '').trim();
+  const submissionId = String(body.submissionId || Utilities.getUuid()).trim();
   const guests = Number(body.guests || 0);
   if (!name) throw new Error('Name is required');
   if (name.length > 120) throw new Error('Name is too long');
   if (message.length > 1000) throw new Error('Message is too long');
-  if (!submissionId || submissionId.length > 100) throw new Error('Invalid submission ID');
+  if (!/^[a-zA-Z0-9-]{8,100}$/.test(submissionId)) throw new Error('Invalid submission ID');
   if (!Number.isInteger(guests) || guests < 0 || guests > 4) throw new Error('Invalid guest count');
   return {
-    name: name,
+    name: literal_(name),
     attending: Boolean(body.attending),
     guests: Boolean(body.attending) ? guests : 0,
-    message: message,
-    submissionId: submissionId
+    message: literal_(message),
+    submissionId: literal_(submissionId)
   };
 }
 

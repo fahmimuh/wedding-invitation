@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Undangan pernikahan Sultana Balqis Hidayat dan Fahmi Muhammad Izzuddin, 23 Agustus 2026 di Malang.">
+<meta property="og:title" content="A Moment of Sultana & Fahmi">
+<meta property="og:description" content="Kami mengundang Anda untuk merayakan hari bahagia kami pada 23 Agustus 2026.">
+<meta property="og:image" content="https://momentofsultanafahmi.my.id/og-wedding.jpg">
+<meta property="og:url" content="https://momentofsultanafahmi.my.id/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <title>A Moment of Sultana & Fahmi</title>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -980,7 +987,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 .reveal-el{
   opacity:0;
   transform:translateY(18px);
-  transition:opacity 1.15s cubic-bezier(.22,.6,.25,1), transform 1.15s cubic-bezier(.22,.6,.25,1);
+  transition:opacity 0.55s cubic-bezier(.22,.6,.25,1), transform 0.55s cubic-bezier(.22,.6,.25,1);
 }
 .reveal-el.from-left{
   transform:translateX(-30px);
@@ -1471,6 +1478,17 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   min-height:16px;
   text-align:center;
 }
+.field input[readonly]{
+  background:rgba(91,107,69,0.08);
+  cursor:not-allowed;
+}
+.field-hint,.char-count{
+  font:10px/1.4 'Jost',sans-serif;
+  color:var(--olive-deep);
+  opacity:0.75;
+  margin-top:5px;
+}
+.char-count{text-align:right;}
 
 /* Gift note footer */
 .section-footer{
@@ -1709,7 +1727,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 <body class="envelope-locked">
 <div class="wi-root">
 
-  <button class="music-toggle muted" id="musicToggle" onclick="toggleMusic()" aria-label="Mute or unmute music">
+  <button class="music-toggle muted" id="musicToggle" onclick="toggleMusic()" aria-label="Nyalakan musik" aria-pressed="false">
     <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="#3E4A30" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 9v6h4l5 4V5L8 9H4z"/>
       <path d="M17.5 8.5a5 5 0 0 1 0 7"/>
@@ -1729,7 +1747,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
     </svg>
   </button>
 
-  <div class="messages-panel" id="messagesPanel"></div>
+  <div class="messages-panel" id="messagesPanel" role="region" aria-label="Ucapan tamu" aria-live="polite"></div>
 
   <div class="envelope-scene" id="envelopeScene">
     <div class="envelope-wrap">
@@ -1795,7 +1813,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
     </div>
 
     <div class="section section-verse">
-      <div class="arabic-text reveal-el scale-in">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</div>
+      <div class="arabic-text reveal-el scale-in" lang="ar" dir="rtl">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</div>
       <div class="translation-text reveal-el from-left">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."</div>
       <div class="verse-citation reveal-el fade-only">QS. Ar-Rum: 21</div>
     </div>
@@ -1850,7 +1868,8 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
       <div class="rsvp-form">
         <div class="field reveal-el">
           <label for="rsvpName">Nama Lengkap</label>
-          <input type="text" id="rsvpName" placeholder="Nama Anda">
+          <input type="text" id="rsvpName" maxlength="120" placeholder="Nama Anda">
+          <div class="field-hint" id="rsvpNameHint" hidden>Nama sesuai undangan — hubungi kami bila perlu diperbaiki.</div>
         </div>
         <div class="field reveal-el">
           <label>Apakah Anda Akan Hadir?</label>
@@ -1867,10 +1886,11 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
         </div>
         <div class="field reveal-el">
           <label for="rsvpMsg">Ucapan &amp; Doa (opsional)</label>
-          <textarea id="rsvpMsg" rows="3" placeholder="Tulis ucapan untuk kedua mempelai..."></textarea>
+          <textarea id="rsvpMsg" rows="3" maxlength="1000" placeholder="Tulis ucapan untuk kedua mempelai..." oninput="updateMessageCount()"></textarea>
+          <div class="char-count" id="rsvpMsgCount">0/1000</div>
         </div>
         <button class="submit-btn reveal-el scale-in" id="rsvpSubmit" onclick="submitRsvp()">Kirim Konfirmasi</button>
-        <div class="rsvp-status" id="rsvpStatus"></div>
+        <div class="rsvp-status" id="rsvpStatus" role="status" aria-live="polite"></div>
       </div>
     </div>
 
@@ -1960,6 +1980,14 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 
   </div>
 </div>
+<noscript>
+  <div style="padding:24px;font-family:serif;background:#fbf8f0;color:#3a3f30">
+    <h1>Sultana &amp; Fahmi</h1>
+    <p>Minggu, 23 Agustus 2026 — Akad 08.00 WIB, Resepsi 10.00–13.00 WIB.</p>
+    <p>Akasia Resto &amp; Lounge, Jl. Dieng Atas, Kecamatan Dau, Kabupaten Malang, Jawa Timur.</p>
+    <p><a href="https://maps.google.com/?q=Akasia+Resto+%26+Lounge+Dieng+Atas+Malang">Lihat lokasi</a></p>
+  </div>
+</noscript>
 
 <script type="module" src="/src/main.js"></script>
 <script>
@@ -1968,8 +1996,18 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 const RSVP_API_URL = 'https://script.google.com/macros/s/AKfycbzdcfrtsFsc2ifyE3ituzb2eldtvf6VLJxmjCU9lJFVgbrqDz5I8KD5xyBt17tLBXc9/exec';
 const RSVP_LOCAL_KEY = 'wedding-invitation-rsvps';
 const RSVP_SUBMISSION_ID_KEY = 'wedding-invitation-submission-id';
-const rsvpSubmissionId = localStorage.getItem(RSVP_SUBMISSION_ID_KEY) || crypto.randomUUID();
-localStorage.setItem(RSVP_SUBMISSION_ID_KEY, rsvpSubmissionId);
+function getSubmissionId(){
+  try{
+    const existing = localStorage.getItem(RSVP_SUBMISSION_ID_KEY);
+    if(existing) return existing;
+    const generated = crypto.randomUUID ? crypto.randomUUID() : 'legacy-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    localStorage.setItem(RSVP_SUBMISSION_ID_KEY, generated);
+    return generated;
+  }catch(error){
+    return 'legacy-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+  }
+}
+const rsvpSubmissionId = getSubmissionId();
 const invitationGuest = new URLSearchParams(window.location.search).get('to')?.replace(/-/g, ' ').trim() || '';
 
 function getLocalRsvps(){
@@ -1985,6 +2023,11 @@ function saveLocalRsvp(entry){
 
 // Typewriter effect for envelope-page text
 function typeWriter(el, text, speed, callback){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    el.textContent = text;
+    if(callback) callback();
+    return;
+  }
   el.textContent = '';
   el.classList.add('typing-cursor');
   let i = 0;
@@ -2114,12 +2157,16 @@ let resumeMusicOnReturn = false;
 async function playMusic(){
   musicPlaying = true;
   musicToggle.classList.remove('muted');
+  musicToggle.setAttribute('aria-pressed', 'true');
+  musicToggle.setAttribute('aria-label', 'Matikan musik');
   try{
     await bgMusic.play();
   }catch(error){
     console.error(error);
     musicPlaying = false;
     musicToggle.classList.add('muted');
+    musicToggle.setAttribute('aria-pressed', 'false');
+    musicToggle.setAttribute('aria-label', 'Nyalakan musik');
   }
 }
 
@@ -2128,6 +2175,8 @@ function toggleMusic(){
     bgMusic.pause();
     musicPlaying = false;
     musicToggle.classList.add('muted');
+    musicToggle.setAttribute('aria-pressed', 'false');
+    musicToggle.setAttribute('aria-label', 'Nyalakan musik');
   }else{
     playMusic();
   }
@@ -2170,7 +2219,10 @@ function updateCountdown(){
   const target = new Date('2026-08-23T08:00:00+07:00').getTime();
   const now = Date.now();
   let diff = target - now;
-  if(diff < 0) diff = 0;
+  if(diff <= 0){
+    document.getElementById('countdown').innerHTML = '<div class="count-label">Kami telah menikah — terima kasih atas doa dan kehadirannya.</div>';
+    return false;
+  }
   const d = Math.floor(diff/(1000*60*60*24));
   const h = Math.floor((diff/(1000*60*60))%24);
   const m = Math.floor((diff/(1000*60))%60);
@@ -2179,9 +2231,12 @@ function updateCountdown(){
   setCountValue(document.getElementById('cd-hours'), h);
   setCountValue(document.getElementById('cd-mins'), m);
   setCountValue(document.getElementById('cd-secs'), s);
+  return true;
 }
 updateCountdown();
-setInterval(updateCountdown, 1000);
+const countdownTimer = setInterval(()=>{
+  if(!updateCountdown()) clearInterval(countdownTimer);
+}, 1000);
 
 // Scroll reveal for sections (starts only once the invitation is actually shown)
 function initScrollReveal(){
@@ -2200,7 +2255,7 @@ function initScrollReveal(){
   document.querySelectorAll('.section').forEach(section=>{
     const items = section.querySelectorAll('.reveal-el');
     items.forEach((el,i)=>{
-      el.style.transitionDelay = (i * 0.19) + 's';
+      el.style.transitionDelay = (i * 0.08) + 's';
     });
   });
   const itemObserver = new IntersectionObserver((entries)=>{
@@ -2244,34 +2299,6 @@ const EVENT_END_UTC = "20260823T060000Z";
 const EVENT_LOCATION = "Akasia Resto & Lounge, Jl. Dieng Atas, Kecamatan Dau, Kabupaten Malang, Jawa Timur";
 const EVENT_DESC = "Akad Nikah 08.00-09.00 WIB, dilanjutkan Resepsi 10.00-13.00 WIB.";
 
-function addToCalendar(){
-  const ics = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Wedding Invitation//ID",
-    "BEGIN:VEVENT",
-    "UID:" + Date.now() + "@wedding-invitation",
-    "DTSTAMP:" + EVENT_START_UTC,
-    "DTSTART:" + EVENT_START_UTC,
-    "DTEND:" + EVENT_END_UTC,
-    "SUMMARY:" + EVENT_TITLE,
-    "LOCATION:" + EVENT_LOCATION,
-    "DESCRIPTION:" + EVENT_DESC,
-    "END:VEVENT",
-    "END:VCALENDAR"
-  ].join("\r\n");
-
-  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "Pernikahan-Sultana-Fahmi.ics";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 function addToGoogleCalendar(){
   const params = new URLSearchParams({
     action: "TEMPLATE",
@@ -2298,6 +2325,12 @@ if(invitationGuest){
   rsvpName.value = invitationGuest;
   rsvpName.readOnly = true;
   rsvpName.setAttribute('aria-readonly', 'true');
+  document.getElementById('rsvpNameHint').hidden = false;
+}
+
+function updateMessageCount(){
+  const message = document.getElementById('rsvpMsg');
+  document.getElementById('rsvpMsgCount').textContent = message.value.length + '/1000';
 }
 
 // Guest messages panel
@@ -2310,7 +2343,7 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
-function prependMessage(entry){
+function prependMessage(entry, open = true){
   const panel = document.getElementById('messagesPanel');
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
@@ -2323,7 +2356,7 @@ function prependMessage(entry){
   bubble.append(name, message);
   panel.querySelector('.msg-empty')?.remove();
   panel.prepend(bubble);
-  panel.classList.add('open');
+  if(open) panel.classList.add('open');
 }
 
 async function toggleMessages(){
@@ -2412,6 +2445,8 @@ async function submitRsvp(){
         body: JSON.stringify(entry)
       });
       if(!response.ok) throw new Error('Unable to save RSVP');
+      const result = await response.json();
+      if(result.ok !== true) throw new Error(result.error || 'Unable to save RSVP');
     }else{
       saveLocalRsvp(entry);
     }
@@ -2422,7 +2457,10 @@ async function submitRsvp(){
       ? "Terima kasih, kami tunggu kehadiran Anda."
       : "Terima kasih atas konfirmasinya, Anda akan sangat kami rindukan.";
     document.querySelector('.rsvp-form').replaceWith(successMessage);
-    if(msg) prependMessage(entry);
+    if(msg){
+      prependMessage(entry, false);
+      setTimeout(()=>document.getElementById('messagesPanel').classList.add('open'), 700);
+    }
   }catch(err){
     statusEl.textContent = 'Maaf, konfirmasi belum tersimpan. Silakan coba lagi.';
     submitBtn.disabled = false;

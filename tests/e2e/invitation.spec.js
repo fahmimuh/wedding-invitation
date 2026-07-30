@@ -5,7 +5,7 @@ const apiPattern = /script\.google\.com|script\.googleusercontent\.com/;
 async function guardRsvpApi(page, getHandler = route => route.fulfill({ json: [] })) {
   await page.route(apiPattern, async route => {
     if (route.request().method() === 'POST') {
-      await route.fulfill({ status: 200, body: 'ok' });
+      await route.fulfill({ status: 200, json: { ok: true } });
       return;
     }
     await getHandler(route);
@@ -130,9 +130,31 @@ test('closed wishes panel cannot intercept taps', async ({ page }) => {
 
   await expect(panel).toHaveCSS('visibility', 'hidden');
   await expect(panel).toHaveCSS('pointer-events', 'none');
-  await page.evaluate(() => window.openMessages());
+  await page.evaluate(() => window.prependMessage({ name: 'Guest', message: 'Visible bubble' }));
   await expect(panel).toHaveCSS('visibility', 'visible');
   await expect(panel).toHaveCSS('pointer-events', 'auto');
+  await page.evaluate(() => window.toggleMessages());
+  const seal = await page.locator('#seal').boundingBox();
+  await page.mouse.click(seal.x + seal.width / 2, seal.y + seal.height / 2);
+  await expect(page.locator('#envelope')).toHaveClass(/open/);
+});
+
+test('RSVP server error keeps the form and restores submit', async ({ page }) => {
+  await page.unroute(apiPattern);
+  await page.route(apiPattern, route => route.fulfill({ status: 200, json: { ok: false, error: 'Rejected' } }));
+  await page.goto('/');
+  await page.evaluate(() => {
+    const invite = document.getElementById('invite');
+    invite.classList.add('show');
+    invite.removeAttribute('inert');
+    document.getElementById('envelopeScene').classList.add('hidden');
+    document.getElementById('letterScene').classList.add('hidden');
+  });
+  await page.locator('#rsvpName').fill('Rejected Guest');
+  await page.locator('#rsvpSubmit').click();
+  await expect(page.locator('.rsvp-form')).toBeVisible();
+  await expect(page.locator('#rsvpSubmit')).toBeEnabled();
+  await expect(page.locator('#rsvpStatus')).toContainText('belum tersimpan');
 });
 
 test('background music uses native streaming audio', async ({ page }) => {
