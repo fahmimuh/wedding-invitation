@@ -1773,7 +1773,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
     </div>
   </div>
 
-  <div class="invite" id="invite">
+  <div class="invite" id="invite" inert aria-hidden="true">
 
 
     <div class="section section-hero">
@@ -1965,6 +1965,9 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 // Deploy apps-script/Code.gs as a Web App, then paste its URL here.
 const RSVP_API_URL = 'https://script.google.com/macros/s/AKfycbzdcfrtsFsc2ifyE3ituzb2eldtvf6VLJxmjCU9lJFVgbrqDz5I8KD5xyBt17tLBXc9/exec';
 const RSVP_LOCAL_KEY = 'wedding-invitation-rsvps';
+const RSVP_SUBMISSION_ID_KEY = 'wedding-invitation-submission-id';
+const rsvpSubmissionId = localStorage.getItem(RSVP_SUBMISSION_ID_KEY) || crypto.randomUUID();
+localStorage.setItem(RSVP_SUBMISSION_ID_KEY, rsvpSubmissionId);
 const invitationGuest = new URLSearchParams(window.location.search).get('to')?.replace(/-/g, ' ').trim() || '';
 
 function getLocalRsvps(){
@@ -2061,6 +2064,10 @@ function openLetter(){
     if(!desktop) letterScene.classList.add('hidden');
     letterScene.classList.remove('transitioning');
     document.body.classList.remove('envelope-locked');
+    invite.removeAttribute('inert');
+    invite.setAttribute('aria-hidden', 'false');
+    document.getElementById('envelope').tabIndex = -1;
+    document.getElementById('letterPaperFrame').tabIndex = -1;
     invite.classList.add('show');
     invite.scrollIntoView({behavior:reducedMotion ? 'auto' : 'smooth'});
     initScrollReveal();
@@ -2423,7 +2430,7 @@ async function submitRsvp(){
 
   const entry = {
     name, attending, guests: attending ? Number(guests) : 0, message: msg,
-    submittedAt: new Date().toISOString()
+    submittedAt: new Date().toISOString(), submissionId: rsvpSubmissionId
   };
 
   try{

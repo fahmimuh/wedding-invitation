@@ -74,6 +74,8 @@ test('failed first wishes load retries on the next open', async ({ page }) => {
 
 test('Enter and Space traverse envelope and letter', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('#invite')).toHaveAttribute('inert', '');
+  await expect(page.locator('#invite')).toHaveAttribute('aria-hidden', 'true');
   const envelope = page.locator('#envelope');
   await envelope.focus();
   await page.keyboard.press('Enter');
@@ -83,22 +85,31 @@ test('Enter and Space traverse envelope and letter', async ({ page }) => {
   await letter.focus();
   await page.keyboard.press('Space');
   await expect(page.locator('#invite')).toHaveClass(/show/);
+  await expect(page.locator('#invite')).not.toHaveAttribute('inert', '');
+  await expect(page.locator('#invite')).toHaveAttribute('aria-hidden', 'false');
+  await expect(page.locator('#envelope')).toHaveAttribute('tabindex', '-1');
+  await expect(page.locator('#letterPaperFrame')).toHaveAttribute('tabindex', '-1');
 });
 
 test('successful RSVP appends wish with one POST and no GET', async ({ page }) => {
   let posts = 0;
   let gets = 0;
+  let submittedBody;
   await page.unroute(apiPattern);
   await guardRsvpApi(page, route => {
     gets += 1;
     return route.fulfill({ json: [] });
   });
   page.on('request', request => {
-    if (apiPattern.test(request.url()) && request.method() === 'POST') posts += 1;
+    if (apiPattern.test(request.url()) && request.method() === 'POST') {
+      posts += 1;
+      submittedBody = JSON.parse(request.postData());
+    }
   });
   await page.goto('/');
   await page.evaluate(() => {
     document.getElementById('invite').classList.add('show');
+    document.getElementById('invite').removeAttribute('inert');
     document.getElementById('envelopeScene').classList.add('hidden');
     document.getElementById('letterScene').classList.add('hidden');
     document.body.classList.remove('envelope-locked');
@@ -110,6 +121,7 @@ test('successful RSVP appends wish with one POST and no GET', async ({ page }) =
   await expect(page.locator('#messagesPanel')).toContainText('A safe intercepted wish');
   expect(posts).toBe(1);
   expect(gets).toBe(0);
+  expect(submittedBody.submissionId).toMatch(/^[a-zA-Z0-9-]{8,100}$/);
 });
 
 test('closed wishes panel cannot intercept taps', async ({ page }) => {
