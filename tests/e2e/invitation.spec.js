@@ -134,3 +134,9 @@ test('closed wishes panel cannot intercept taps', async ({ page }) => {
   await expect(panel).toHaveCSS('visibility', 'visible');
   await expect(panel).toHaveCSS('pointer-events', 'auto');
 });
+
+test('background music uses native streaming audio', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#bgMusic')).toHaveAttribute('preload', 'none');
+  await expect(page.locator('#bgMusic')).toHaveAttribute('loop', '');
+});
