@@ -2025,19 +2025,21 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 const RSVP_API_URL = 'https://script.google.com/macros/s/AKfycbzdcfrtsFsc2ifyE3ituzb2eldtvf6VLJxmjCU9lJFVgbrqDz5I8KD5xyBt17tLBXc9/exec';
 const RSVP_LOCAL_KEY = 'wedding-invitation-rsvps';
 const RSVP_SUBMISSION_ID_KEY = 'wedding-invitation-submission-id';
-function getSubmissionId(){
+const invitationGuestParam = new URLSearchParams(window.location.search).get('to')?.trim() || '';
+const invitationGuest = invitationGuestParam.replace(/-/g, ' ');
+function getSubmissionId(invitationKey){
+  const storageKey = RSVP_SUBMISSION_ID_KEY + ':' + encodeURIComponent(invitationKey.toLowerCase());
   try{
-    const existing = localStorage.getItem(RSVP_SUBMISSION_ID_KEY);
+    const existing = localStorage.getItem(storageKey);
     if(existing) return existing;
     const generated = crypto.randomUUID ? crypto.randomUUID() : 'legacy-' + Date.now() + '-' + Math.random().toString(36).slice(2);
-    localStorage.setItem(RSVP_SUBMISSION_ID_KEY, generated);
+    localStorage.setItem(storageKey, generated);
     return generated;
   }catch(error){
     return 'legacy-' + Date.now() + '-' + Math.random().toString(36).slice(2);
   }
 }
-const rsvpSubmissionId = getSubmissionId();
-const invitationGuest = new URLSearchParams(window.location.search).get('to')?.replace(/-/g, ' ').trim() || '';
+const rsvpSubmissionId = getSubmissionId(invitationGuestParam || 'generic');
 
 function getLocalRsvps(){
   try { return JSON.parse(localStorage.getItem(RSVP_LOCAL_KEY) || '[]'); }

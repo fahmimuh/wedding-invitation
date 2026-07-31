@@ -134,6 +134,20 @@ test('successful RSVP appends wish with one POST and no GET', async ({ page }) =
   expect(submittedBody.submissionId).toMatch(/^[a-zA-Z0-9-]{8,100}$/);
 });
 
+test('different invitation links use different stable submission IDs', async ({ page }) => {
+  await page.goto('/?to=Office-Team-A');
+  const firstKey = 'wedding-invitation-submission-id:office-team-a';
+  const firstId = await page.evaluate(key => localStorage.getItem(key), firstKey);
+  await page.reload();
+  expect(await page.evaluate(key => localStorage.getItem(key), firstKey)).toBe(firstId);
+
+  await page.goto('/?to=Office-Team-B');
+  const secondId = await page.evaluate(() => localStorage.getItem('wedding-invitation-submission-id:office-team-b'));
+  expect(firstId).toMatch(/^[a-zA-Z0-9-]{8,100}$/);
+  expect(secondId).toMatch(/^[a-zA-Z0-9-]{8,100}$/);
+  expect(secondId).not.toBe(firstId);
+});
+
 test('closed wishes panel cannot intercept taps', async ({ page }) => {
   await page.goto('/');
   const panel = page.locator('#messagesPanel');
