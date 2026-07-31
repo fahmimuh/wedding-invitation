@@ -167,8 +167,12 @@ body.envelope-locked{
   animation:idleFloat 3.4s ease-in-out infinite alternate;
 }
 .envelope.open{
-  animation:none;
+  animation:envelopeFadeOut 0.8s ease forwards;
   transform:perspective(1400px) rotateX(5deg);
+}
+@keyframes envelopeFadeOut{
+  from{ opacity:1; }
+  to{ opacity:0; }
 }
 @keyframes idleFloat{
   0%{ transform:perspective(1400px) rotateX(5deg) translateY(0); }
