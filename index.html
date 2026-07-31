@@ -16,6 +16,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500;600&family=Amiri:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap">
 <style>
+@font-face{
+  font-family:'Miracle History';
+  src:url('/fonts/MiracleHistory.ttf') format('truetype');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
   --ivory:#FBF8F0;
   --ivory-deep:#F1EBDC;
@@ -140,9 +147,13 @@ body.envelope-locked{
   letter-spacing:0.28em;
   text-transform:uppercase;
   color:var(--olive-deep);
-  opacity:0.75;
+  opacity:0;
   margin-top:28px;
   min-height:1em;
+  transition:opacity 1.4s ease;
+}
+.envelope-hint.hint-visible{
+  opacity:0.75;
 }
 
 .envelope{
@@ -535,7 +546,7 @@ body.envelope-locked{
     font-size:10px;
   }
   .invite .section-intro{
-    min-height:340px;
+    min-height:300px;
     margin-left:12px;
     margin-right:12px;
     padding:42px 12px 38px;
@@ -547,7 +558,7 @@ body.envelope-locked{
     max-width:300px;
     font-size:15px;
     line-height:1.8;
-    margin-bottom:34px;
+    margin-bottom:16px;
   }
   .invite .person-name{
     font-size:clamp(19px,5.5vw,26px);
@@ -565,7 +576,7 @@ body.envelope-locked{
     white-space:nowrap;
   }
   .invite .section:has(.event-card){
-    min-height:450px;
+    min-height:420px;
     padding:38px 24px 34px;
     display:flex;
     flex-direction:column;
@@ -573,7 +584,7 @@ body.envelope-locked{
   }
   .invite .event-card{
     max-width:none;
-    margin:18px 0 0;
+    margin:8px 0 0;
     padding:26px 18px 24px;
     background:transparent;
     border:0;
@@ -617,7 +628,7 @@ body.envelope-locked{
     font-size:clamp(30px,4vw,36px);
   }
   .invite .section-footer{
-    padding:34px 26px;
+    padding:26px 22px;
   }
   .person-name,
   .person-parents{
@@ -671,7 +682,7 @@ body.envelope-locked{
     padding:48px 26px 44px;
   }
   .invite.desktop-invite .hero-name{
-    font-size:clamp(3.2rem,6.5vw,4.8rem);
+    font-size:clamp(5rem,11vw,8rem);
   }
   .invite.desktop-invite .arabic-text{
     max-width:300px;
@@ -689,7 +700,7 @@ body.envelope-locked{
     font-size:10px;
   }
   .invite.desktop-invite .section-intro{
-    min-height:340px;
+    min-height:300px;
     padding:42px 26px 38px;
     display:flex;
     flex-direction:column;
@@ -699,7 +710,7 @@ body.envelope-locked{
     max-width:300px;
     font-size:15px;
     line-height:1.8;
-    margin-bottom:34px;
+    margin-bottom:16px;
   }
   .invite.desktop-invite .person-name{
     font-size:clamp(21px,1.9vw,25px);
@@ -716,7 +727,7 @@ body.envelope-locked{
     white-space:nowrap;
   }
   .invite.desktop-invite .section:has(.event-card){
-    min-height:450px;
+    min-height:420px;
     padding:38px 24px 34px;
     display:flex;
     flex-direction:column;
@@ -724,7 +735,7 @@ body.envelope-locked{
   }
   .invite.desktop-invite .event-card{
     max-width:none;
-    margin:18px 0 0;
+    margin:8px 0 0;
     padding:26px 18px 24px;
     background:transparent;
     border:0;
@@ -771,7 +782,7 @@ body.envelope-locked{
     font-size:clamp(30px,4vw,36px);
   }
   .invite.desktop-invite .section-footer{
-    padding:34px 26px;
+    padding:26px 22px;
   }
 }
 
@@ -881,21 +892,21 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   }
 }
 @keyframes heroFadeUp{
-  from{ opacity:0; transform:translateY(24px); }
+  from{ opacity:0; transform:translateY(14px); }
   to{ opacity:1; transform:translateY(0); }
 }
-.invite.show .section-hero{
-  animation:heroFadeUp 1.4s ease-out both;
+@keyframes heroContainerFade{
+  from{ opacity:0; }
+  to{ opacity:1; }
 }
-@keyframes heroKickerFade{
-  from{ opacity:0; transform:translateY(-10px); letter-spacing:0.5em; }
-  to{ opacity:1; transform:translateY(0); letter-spacing:0.26em; }
+.invite.show .section-hero{
+  animation:heroContainerFade 1s ease-out both;
 }
 .hero-kicker{
   opacity:0;
 }
 .invite.show .hero-kicker{
-  animation:heroKickerFade 1.2s ease-out 0.3s both;
+  animation:heroFadeUp 1s cubic-bezier(.22,.61,.36,1) 0.2s both;
 }
 .hero-scroll-cue{
   position:absolute;
@@ -925,45 +936,50 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   50%{ transform:translateX(-50%) translateY(8px); }
 }
 .hero-kicker{
-  font-family:'Caveat','Brush Script MT',cursive;
+  font-family:'Miracle History', 'Playfair Display', serif;
+  font-style:normal;
+  font-weight:normal;
   color:var(--olive);
-  font-size:1.05rem;
-  letter-spacing:0.26em;
-  text-transform:uppercase;
+  font-size:1.8rem;
+  line-height:1.35;
+  letter-spacing:0.04em;
 }
 .hero-names{
   display:flex;
-  flex-direction:column;
-  gap:0;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:0.45em;
   margin:28px 0 12px;
 }
 .hero-name{
   font-family:'Caveat','Brush Script MT',cursive;
   color:var(--olive-deep);
-  font-size:clamp(4rem,17vw,6.5rem);
+  font-size:clamp(6rem,28vw,11rem);
   font-weight:500;
   line-height:0.72;
   letter-spacing:-0.04em;
   opacity:0;
 }
 .invite.show .hero-name{
-  animation:heroFadeUp 0.9s ease-out both;
+  animation:heroFadeUp 1s cubic-bezier(.22,.61,.36,1) both;
 }
 .invite.show #heroName1{
-  animation-delay:0.5s;
+  animation-delay:0.45s;
 }
 .invite.show #heroName2{
   animation-delay:0.85s;
 }
 .hero-ampersand{
   font-family:'Cormorant Garamond',serif;
+  font-weight:300;
   color:var(--brass);
-  font-size:2.2rem;
+  font-size:clamp(3.5rem,14vw,6rem);
   line-height:1;
   opacity:0;
 }
 .invite.show .hero-ampersand{
-  animation:heroFadeUp 0.9s ease-out 0.75s both;
+  animation:heroFadeUp 1s cubic-bezier(.22,.61,.36,1) 0.65s both;
 }
 .section.in-view{
   opacity:1;
@@ -1068,7 +1084,6 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   color:var(--brass-deep);
   margin-bottom:14px;
 }
-
 .save-date{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(26px,5.4vw,34px);
@@ -1085,7 +1100,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   color:var(--text);
   opacity:0.85;
   max-width:440px;
-  margin:0 auto 32px;
+  margin:0 auto 16px;
 }
 
 .section-verse{
@@ -1209,7 +1224,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   border-radius:22px;
   padding:32px 24px 26px;
   max-width:420px;
-  margin:20px auto 0;
+  margin:8px auto 0;
   text-align:left;
 }
 .pin-icon{
@@ -1498,32 +1513,44 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   text-align:center;
 }
 .field input[readonly]{
-  background:rgba(91,107,69,0.08);
+  background:var(--ivory-deep);
   cursor:not-allowed;
 }
 /* Gift note footer */
 .section-footer{
-  padding-top:56px;
-  padding-bottom:30px;
+  padding-top:26px;
+  padding-bottom:22px;
 }
 
 @media (max-height:680px){
   .section{padding-top:22px;padding-bottom:18px;}
-  .hero-name{font-size:clamp(3.4rem,15vw,5.2rem);}
+  .hero-name{font-size:clamp(4.5rem,22vw,7rem);}
 }
 .gift-note{
   font-family:'Lora',serif;
-  font-size:15.5px;
-  line-height:1.9;
+  font-size:13px;
+  line-height:1.75;
   color:var(--text);
   opacity:0.9;
-  max-width:440px;
+  max-width:400px;
   margin:0 auto;
 }
-.gift-icon{
-  margin:24px auto 0;
+.gift-icon-wrap{
   width:56px;
   height:56px;
+  margin:20px auto 0;
+  border-radius:50%;
+  background:rgba(251,248,240,0.5);
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+  box-shadow:0 10px 28px -14px rgba(58,58,38,0.22);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.gift-icon{
+  width:44px;
+  height:44px;
 }
 
 .music-toggle{
@@ -1809,11 +1836,10 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 
     <div class="section section-hero">
       <div class="hero-content">
-        <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
+        <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate<br>Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
-          <div class="hero-name" id="heroName1">Sultana</div>
-          <div class="hero-ampersand" id="heroAmp">&amp;</div>
-          <div class="hero-name" id="heroName2">Fahmi</div>
+          <div class="hero-name" id="heroName1">S</div>
+          <div class="hero-name" id="heroName2">F</div>
         </div>
       </div>
       <div class="hero-scroll-cue" aria-hidden="true">
@@ -1868,7 +1894,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
         </svg>
         <div class="venue-name reveal-el">Akasia Resto &amp; Lounge</div>
         <div class="venue-address reveal-el fade-only">Jl. Dieng Atas, Kecamatan Dau, Kabupaten Malang, Jawa Timur</div>
-        <a class="map-btn" href="https://maps.google.com/?q=Akasia+Resto+%26+Lounge+Dieng+Atas+Malang" target="_blank" rel="noopener">Lihat Lokasi</a>
+        <a class="map-btn reveal-el" href="https://maps.google.com/?q=Akasia+Resto+%26+Lounge+Dieng+Atas+Malang" target="_blank" rel="noopener">Lihat Lokasi</a>
       </div>
     </div>
 
@@ -1906,6 +1932,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
     <div class="section-divider" id="divider3b"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
 
     <div class="section section-card section-calendar">
+      <div class="eyebrow reveal-el">Sampai bertemu</div>
       <div class="mini-calendar reveal-el scale-in">
         <div class="mini-cal-header">August 2026</div>
         <div class="mini-cal-grid">
@@ -1970,9 +1997,9 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
     <div class="section-divider" id="divider4"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
 
     <div class="section section-countdown">
-      <div class="save-date reveal-el scale-in">23/08/2026</div>
-      <div class="eyebrow reveal-el">Menuju Hari Bahagia Kami</div>
-      <div class="countdown" id="countdown">
+      <div class="save-date reveal-el scale-in">23.08.2026</div>
+      <div class="eyebrow reveal-el">Menanti Awal Perjalanan Kami</div>
+      <div class="countdown reveal-el" id="countdown">
         <div class="count-item"><div class="count-num" id="cd-days"></div><div class="count-label">Hari</div></div>
         <div class="count-item"><div class="count-num" id="cd-hours"></div><div class="count-label">Jam</div></div>
         <div class="count-item"><div class="count-num" id="cd-mins"></div><div class="count-label">Menit</div></div>
@@ -1983,8 +2010,11 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
     <div class="section-divider" id="divider5"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
 
     <div class="section section-footer">
-      <div class="gift-note reveal-el">Kehadiran dan doa restu Bapak/Ibu/Saudara/i merupakan hadiah terindah bagi kami. Dengan penuh rasa hormat, kami mohon agar Bapak/Ibu/Saudara/i berkenan untuk tidak memberikan hadiah maupun tanda kasih. Doa yang tulus adalah anugerah yang paling berarti bagi kami.</div>
-      <img class="gift-icon reveal-el scale-in" src="/gift-icon.png" alt="" />
+      <div class="gift-note reveal-el">Kehadiran dan doa restu Anda merupakan hadiah terindah untuk kami. Dengan penuh rasa hormat, kami mohon agar Bapak/Ibu/Saudara/i berkenan untuk <strong>tidak memberikan hadiah maupun tanda kasih</strong>. Doa yang tulus adalah anugerah yang paling berarti bagi kami.</div>
+    </div>
+
+    <div class="gift-icon-wrap reveal-el scale-in">
+      <img class="gift-icon" src="/gift-icon.png" alt="" />
     </div>
 
   </div>
@@ -2030,6 +2060,14 @@ function saveLocalRsvp(entry){
   localStorage.setItem(RSVP_LOCAL_KEY, JSON.stringify(entries));
 }
 
+// Simple fade-in for the "Tap to open" hint (no typing effect)
+function fadeInText(el, text){
+  el.textContent = text;
+  el.classList.remove('hint-visible');
+  void el.offsetWidth;
+  el.classList.add('hint-visible');
+}
+
 // Typewriter effect for envelope-page text
 function typeWriter(el, text, speed, callback){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -2062,7 +2100,7 @@ function typeWriter(el, text, speed, callback){
   typeWriter(heading, 'A love letter to forever', 45, ()=>{
     typeWriter(addrLabel, 'Kepada Yth.', 65, ()=>{
       typeWriter(addrGuest, invitationGuest || 'Tamu Undangan', 65, ()=>{
-        typeWriter(hint, 'Tap to open', 65);
+        fadeInText(hint, 'Tap to open');
       });
     });
   });
@@ -2079,7 +2117,7 @@ function typeLetterContents(){
     typeWriter(body, 'With grateful hearts, we invite you to celebrate the beginning of our journey.', 28, ()=>{
       typeWriter(signoff, 'With love,', 45, ()=>{
         typeWriter(names, 'Sultana & Fahmi', 45, ()=>{
-          typeWriter(hint, 'Tap to open', 65);
+          fadeInText(hint, 'Tap to open');
         });
       });
     });
