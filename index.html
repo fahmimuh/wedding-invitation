@@ -667,7 +667,7 @@ body.envelope-locked{
     padding:48px 26px 44px;
   }
   .invite.desktop-invite .hero-name{
-    font-size:clamp(5rem,11vw,8rem);
+    font-size:clamp(3.4rem,7vw,5.5rem);
   }
   .invite.desktop-invite .arabic-text{
     max-width:300px;
@@ -931,18 +931,18 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 }
 .hero-names{
   display:flex;
-  flex-direction:row;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:0.45em;
+  gap:0;
   margin:28px 0 12px;
 }
 .hero-name{
   font-family:'Caveat','Brush Script MT',cursive;
   color:var(--olive-deep);
-  font-size:clamp(6rem,28vw,11rem);
+  font-size:clamp(4rem,18vw,7rem);
   font-weight:500;
-  line-height:0.72;
+  line-height:0.8;
   letter-spacing:-0.04em;
   opacity:0;
 }
@@ -959,8 +959,8 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   font-family:'Cormorant Garamond',serif;
   font-weight:300;
   color:var(--brass);
-  font-size:clamp(3.5rem,14vw,6rem);
-  line-height:1;
+  font-size:clamp(2.5rem,10vw,4rem);
+  line-height:0.8;
   opacity:0;
 }
 .invite.show .hero-ampersand{
@@ -1505,7 +1505,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 
 @media (max-height:680px){
   .section{padding-top:22px;padding-bottom:18px;}
-  .hero-name{font-size:clamp(4.5rem,22vw,7rem);}
+  .hero-name{font-size:clamp(3.2rem,16vw,5rem);}
 }
 .gift-note{
   font-family:'Lora',serif;
@@ -1819,8 +1819,9 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
       <div class="hero-content">
         <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate<br>Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
-          <div class="hero-name" id="heroName1">S</div>
-          <div class="hero-name" id="heroName2">F</div>
+          <div class="hero-name" id="heroName1">Sultana</div>
+          <div class="hero-ampersand" aria-hidden="true">&amp;</div>
+          <div class="hero-name" id="heroName2">Fahmi</div>
         </div>
       </div>
       <div class="hero-scroll-cue" aria-hidden="true">
