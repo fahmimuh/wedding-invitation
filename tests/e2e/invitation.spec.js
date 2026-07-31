@@ -38,9 +38,11 @@ test('wax seal center tap opens the envelope at 375x812', async ({ page }) => {
 
 test('Tap to open buttons open both invitation gates', async ({ page }) => {
   await page.goto('/');
-  await page.locator('#envHint').click();
+  await page.locator('#envHint').focus();
+  await page.keyboard.press('Enter');
   await expect(page.locator('#letterScene')).toBeVisible();
-  await page.locator('#letterHint').click();
+  await page.locator('#letterHint').focus();
+  await page.keyboard.press('Space');
   await expect(page.locator('#invite')).toHaveClass(/show/);
 });
 
