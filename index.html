@@ -688,7 +688,7 @@ body.envelope-locked{
     padding:48px 26px 44px;
   }
   .invite.desktop-invite .hero-name{
-    font-size:clamp(2.3rem,5vw,3.7rem);
+    font-size:clamp(2rem,4.3vw,3.2rem);
   }
   .invite.desktop-invite .arabic-text{
     max-width:300px;
@@ -958,16 +958,16 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:clamp(0.3rem,1vw,0.55rem);
+  gap:clamp(0.75rem,2vw,1.1rem);
   margin:28px 0 12px;
 }
 .hero-name{
   font-family:'Aston Script','Caveat','Brush Script MT',cursive;
   color:var(--olive-deep);
-  font-size:clamp(2.6rem,12vw,4.5rem);
+  font-size:clamp(2.3rem,10vw,3.8rem);
   font-weight:normal;
-  line-height:0.95;
-  letter-spacing:-0.04em;
+  line-height:1.15;
+  letter-spacing:0;
   opacity:0;
 }
 .invite.show .hero-name{
@@ -983,14 +983,14 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   font-family:'Aston Script','Cormorant Garamond',serif;
   font-weight:normal;
   color:var(--brass);
-  font-size:clamp(1.6rem,6.5vw,2.6rem);
-  line-height:0.95;
+  font-size:clamp(1.4rem,5.5vw,2.2rem);
+  line-height:1.15;
   opacity:0;
 }
 @media (max-width:767px){
   .hero-kicker{font-size:clamp(0.75rem,3.4vw,0.95rem);}
-  .hero-name{font-size:clamp(3.4rem,16vw,5rem);}
-  .hero-ampersand{font-size:clamp(2rem,9vw,3rem);}
+  .hero-name{font-size:clamp(2.8rem,13vw,4.1rem);}
+  .hero-ampersand{font-size:clamp(1.7rem,7.5vw,2.5rem);}
 }
 .invite.show .hero-ampersand{
   animation:heroFadeUp 1s cubic-bezier(.22,.61,.36,1) 0.65s both;
