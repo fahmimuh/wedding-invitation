@@ -30,6 +30,13 @@
   font-style:normal;
   font-display:swap;
 }
+@font-face{
+  font-family:'Aston Script';
+  src:url('/fonts/aston-script/aston-script.ttf') format('truetype');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
   --ivory:#FBF8F0;
   --ivory-deep:#F1EBDC;
@@ -948,10 +955,10 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   margin:28px 0 12px;
 }
 .hero-name{
-  font-family:'Caveat','Brush Script MT',cursive;
+  font-family:'Aston Script','Caveat','Brush Script MT',cursive;
   color:var(--olive-deep);
   font-size:clamp(2.6rem,12vw,4.5rem);
-  font-weight:500;
+  font-weight:normal;
   line-height:0.8;
   letter-spacing:-0.04em;
   opacity:0;
@@ -966,8 +973,8 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   animation-delay:0.85s;
 }
 .hero-ampersand{
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;
+  font-family:'Aston Script','Cormorant Garamond',serif;
+  font-weight:normal;
   color:var(--brass);
   font-size:clamp(1.6rem,6.5vw,2.6rem);
   line-height:0.8;
