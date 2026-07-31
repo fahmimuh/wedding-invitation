@@ -2284,11 +2284,15 @@ const countdownTimer = setInterval(()=>{
 // Scroll reveal for sections (starts only once the invitation is actually shown)
 function initScrollReveal(){
   const revealSections = document.querySelectorAll('.section');
+  const giftWrap = document.querySelector('.gift-icon-wrap');
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
         entry.target.classList.add('in-view');
         observer.unobserve(entry.target);
+        if(entry.target.classList.contains('section-footer') && giftWrap){
+          giftWrap.classList.add('in-view');
+        }
       }
     });
   }, { threshold:0.15 });
@@ -2296,7 +2300,10 @@ function initScrollReveal(){
 
   // Stagger delays for individual text/element reveals within each section
   document.querySelectorAll('.section').forEach(section=>{
-    const items = section.querySelectorAll('.reveal-el');
+    const items = [...section.querySelectorAll('.reveal-el')];
+    if(section.classList.contains('section-footer') && giftWrap){
+      items.push(giftWrap);
+    }
     items.forEach((el,i)=>{
       el.style.transitionDelay = (i * 0.08) + 's';
     });
@@ -2309,7 +2316,9 @@ function initScrollReveal(){
       }
     });
   }, { threshold:0.2 });
-  document.querySelectorAll('.reveal-el').forEach(el=>itemObserver.observe(el));
+  document.querySelectorAll('.reveal-el').forEach(el=>{
+    if(el !== giftWrap) itemObserver.observe(el);
+  });
 }
 
 // Messages button: hidden over the hero on mobile, revealed once scrolled to the verse section onward.
