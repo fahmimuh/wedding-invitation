@@ -914,7 +914,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   opacity:0;
 }
 .invite.show .hero-kicker{
-  animation:heroFadeUp 1s cubic-bezier(.22,.61,.36,1) 0.2s both;
+  animation:heroFadeUp 1s cubic-bezier(.22,.61,.36,1) 1.05s both;
 }
 .hero-scroll-cue{
   position:absolute;
@@ -959,7 +959,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   align-items:center;
   justify-content:center;
   gap:clamp(1.25rem,3vw,1.75rem);
-  margin:28px 0 12px;
+  margin:0 0 28px;
 }
 .hero-name{
   font-family:'Aston Script','Caveat','Brush Script MT',cursive;
@@ -1853,12 +1853,12 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 
     <div class="section section-hero">
       <div class="hero-content">
-        <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
           <div class="hero-name" id="heroName1">Sultana</div>
           <div class="hero-ampersand" aria-hidden="true">&amp;</div>
           <div class="hero-name" id="heroName2">Fahmi</div>
         </div>
+        <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
       </div>
       <div class="hero-scroll-cue" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
