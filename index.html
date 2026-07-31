@@ -932,9 +932,10 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   font-style:normal;
   font-weight:normal;
   color:var(--olive);
-  font-size:1.8rem;
+  font-size:clamp(1.15rem,5.5vw,1.8rem);
   line-height:1.35;
   letter-spacing:0.04em;
+  white-space:nowrap;
 }
 .hero-names{
   display:flex;
@@ -1824,7 +1825,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 
     <div class="section section-hero">
       <div class="hero-content">
-        <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate<br>Celebration of Love</div>
+        <div class="hero-kicker" id="inviteHeading" tabindex="-1">An Intimate Celebration of Love</div>
         <div class="hero-names" aria-label="Sultana and Fahmi">
           <div class="hero-name" id="heroName1">Sultana</div>
           <div class="hero-ampersand" aria-hidden="true">&amp;</div>
