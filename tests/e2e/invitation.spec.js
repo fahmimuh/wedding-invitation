@@ -173,8 +173,8 @@ test('group invitation gets a fresh ID while personal invitation stays stable', 
   expect(await page.evaluate(() => rsvpSubmissionId)).toBe(firstPersonalId);
 });
 
-test('invalid g falls back to four guests', async ({ page }) => {
-  await page.goto('/?to=Guest&g=invalid');
+test('decimal g falls back to four guests', async ({ page }) => {
+  await page.goto('/?to=Guest&g=2.5');
   await expect(page.locator('#rsvpGuests option')).toHaveCount(4);
 });
 

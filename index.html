@@ -2059,7 +2059,8 @@ const invitationGroupParam = invitationParams.get('group')?.trim() || '';
 const invitationGuest = invitationGuestParam.replace(/-/g, ' ');
 const invitationGroup = invitationGroupParam.replace(/-/g, ' ');
 const invitationAddressee = invitationGroup || invitationGuest;
-const requestedGuestLimit = Number.parseInt(invitationParams.get('g'), 10);
+const guestLimitParam = invitationParams.get('g');
+const requestedGuestLimit = /^-?\d+$/.test(guestLimitParam || '') ? Number(guestLimitParam) : NaN;
 const guestLimit = Number.isInteger(requestedGuestLimit) ? Math.min(4, Math.max(1, requestedGuestLimit)) : 4;
 function getSubmissionId(invitationKey){
   const storageKey = RSVP_SUBMISSION_ID_KEY + ':' + encodeURIComponent(invitationKey.toLowerCase());
