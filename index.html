@@ -37,6 +37,13 @@
   font-style:normal;
   font-display:swap;
 }
+@font-face{
+  font-family:'Cinzel Local';
+  src:url('/fonts/cinzel/cinzel-regular.otf') format('opentype');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
   --ivory:#FBF8F0;
   --ivory-deep:#F1EBDC;
@@ -937,11 +944,11 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   50%{ transform:translateX(-50%) translateY(8px); }
 }
 .hero-kicker{
-  font-family:'Exmouth','Miracle History','Playfair Display',serif;
+  font-family:'Cinzel Local','Times New Roman',serif;
   font-style:normal;
   font-weight:normal;
   color:var(--olive);
-  font-size:clamp(1.15rem,5.5vw,1.8rem);
+  font-size:clamp(0.8rem,2.4vw,1rem);
   line-height:1.35;
   letter-spacing:0.04em;
   white-space:nowrap;
@@ -951,7 +958,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:0;
+  gap:clamp(0.3rem,1vw,0.55rem);
   margin:28px 0 12px;
 }
 .hero-name{
@@ -959,7 +966,7 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   color:var(--olive-deep);
   font-size:clamp(2.6rem,12vw,4.5rem);
   font-weight:normal;
-  line-height:0.8;
+  line-height:0.95;
   letter-spacing:-0.04em;
   opacity:0;
 }
@@ -977,11 +984,11 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   font-weight:normal;
   color:var(--brass);
   font-size:clamp(1.6rem,6.5vw,2.6rem);
-  line-height:0.8;
+  line-height:0.95;
   opacity:0;
 }
 @media (max-width:767px){
-  .hero-kicker{font-size:clamp(1.4rem,6.5vw,2rem);}
+  .hero-kicker{font-size:clamp(0.75rem,3.4vw,0.95rem);}
   .hero-name{font-size:clamp(3.4rem,16vw,5rem);}
   .hero-ampersand{font-size:clamp(2rem,9vw,3rem);}
 }
