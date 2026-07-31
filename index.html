@@ -1512,10 +1512,6 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   min-height:16px;
   text-align:center;
 }
-.field input[readonly]{
-  background:var(--ivory-deep);
-  cursor:not-allowed;
-}
 /* Gift note footer */
 .section-footer{
   padding-top:26px;
@@ -2370,8 +2366,6 @@ setAttend(true);
 if(invitationGuest){
   const rsvpName = document.getElementById('rsvpName');
   rsvpName.value = invitationGuest;
-  rsvpName.readOnly = true;
-  rsvpName.setAttribute('aria-readonly', 'true');
 }
 
 // Guest messages panel
