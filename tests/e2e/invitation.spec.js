@@ -148,6 +148,36 @@ test('different invitation links use different stable submission IDs', async ({ 
   expect(secondId).not.toBe(firstId);
 });
 
+test('g limits guests for personal and group invitations', async ({ page }) => {
+  await page.goto('/?to=Personal-Guest&g=2');
+  await expect(page.locator('#rsvpName')).toHaveValue('Personal Guest');
+  await expect(page.locator('#rsvpGuests option')).toHaveCount(2);
+  await expect(page.locator('#rsvpGuests option')).toHaveText(['1', '2']);
+
+  await page.goto('/?group=Office-Team&g=1');
+  await expect(page.locator('#rsvpName')).toHaveValue('');
+  await expect(page.locator('#rsvpGuests option')).toHaveCount(1);
+  await expect(page.locator('#envAddrGuest')).toContainText('Office Team');
+});
+
+test('group invitation gets a fresh ID while personal invitation stays stable', async ({ page }) => {
+  await page.goto('/?group=Office-Team&g=1');
+  const firstGroupId = await page.evaluate(() => rsvpSubmissionId);
+  await page.reload();
+  const secondGroupId = await page.evaluate(() => rsvpSubmissionId);
+  expect(secondGroupId).not.toBe(firstGroupId);
+
+  await page.goto('/?to=Personal-Guest&g=2');
+  const firstPersonalId = await page.evaluate(() => rsvpSubmissionId);
+  await page.reload();
+  expect(await page.evaluate(() => rsvpSubmissionId)).toBe(firstPersonalId);
+});
+
+test('invalid g falls back to four guests', async ({ page }) => {
+  await page.goto('/?to=Guest&g=invalid');
+  await expect(page.locator('#rsvpGuests option')).toHaveCount(4);
+});
+
 test('closed wishes panel cannot intercept taps', async ({ page }) => {
   await page.goto('/');
   const panel = page.locator('#messagesPanel');

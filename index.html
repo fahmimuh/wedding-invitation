@@ -2046,8 +2046,14 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
 const RSVP_API_URL = 'https://script.google.com/macros/s/AKfycbzdcfrtsFsc2ifyE3ituzb2eldtvf6VLJxmjCU9lJFVgbrqDz5I8KD5xyBt17tLBXc9/exec';
 const RSVP_LOCAL_KEY = 'wedding-invitation-rsvps';
 const RSVP_SUBMISSION_ID_KEY = 'wedding-invitation-submission-id';
-const invitationGuestParam = new URLSearchParams(window.location.search).get('to')?.trim() || '';
+const invitationParams = new URLSearchParams(window.location.search);
+const invitationGuestParam = invitationParams.get('to')?.trim() || '';
+const invitationGroupParam = invitationParams.get('group')?.trim() || '';
 const invitationGuest = invitationGuestParam.replace(/-/g, ' ');
+const invitationGroup = invitationGroupParam.replace(/-/g, ' ');
+const invitationAddressee = invitationGroup || invitationGuest;
+const requestedGuestLimit = Number.parseInt(invitationParams.get('g'), 10);
+const guestLimit = Number.isInteger(requestedGuestLimit) ? Math.min(4, Math.max(1, requestedGuestLimit)) : 4;
 function getSubmissionId(invitationKey){
   const storageKey = RSVP_SUBMISSION_ID_KEY + ':' + encodeURIComponent(invitationKey.toLowerCase());
   try{
@@ -2060,7 +2066,9 @@ function getSubmissionId(invitationKey){
     return 'legacy-' + Date.now() + '-' + Math.random().toString(36).slice(2);
   }
 }
-const rsvpSubmissionId = getSubmissionId(invitationGuestParam || 'generic');
+const rsvpSubmissionId = invitationGroupParam
+  ? (crypto.randomUUID ? crypto.randomUUID() : 'group-' + Date.now() + '-' + Math.random().toString(36).slice(2))
+  : getSubmissionId(invitationGuestParam || 'generic');
 
 function getLocalRsvps(){
   try { return JSON.parse(localStorage.getItem(RSVP_LOCAL_KEY) || '[]'); }
@@ -2112,7 +2120,7 @@ function typeWriter(el, text, speed, callback){
 
   typeWriter(heading, 'A love letter to forever', 45, ()=>{
     typeWriter(addrLabel, 'Kepada Yth.', 65, ()=>{
-      typeWriter(addrGuest, invitationGuest || 'Tamu Undangan', 65, ()=>{
+      typeWriter(addrGuest, invitationAddressee || 'Tamu Undangan', 65, ()=>{
         fadeInText(hint, 'Tap to open');
       });
     });
@@ -2126,7 +2134,7 @@ function typeLetterContents(){
   const names = document.getElementById('letterNames');
   const hint = document.getElementById('letterHint');
 
-  typeWriter(greeting, invitationGuest ? `Dear ${invitationGuest},` : 'Dear Guests,', 45, ()=>{
+  typeWriter(greeting, invitationAddressee ? `Dear ${invitationAddressee},` : 'Dear Guests,', 45, ()=>{
     typeWriter(body, 'With grateful hearts, we invite you to celebrate the beginning of our journey.', 28, ()=>{
       typeWriter(signoff, 'With love,', 45, ()=>{
         typeWriter(names, 'Sultana & Fahmi', 45, ()=>{
@@ -2389,7 +2397,15 @@ function setAttend(val){
 }
 setAttend(true);
 
-if(invitationGuest){
+const guestSelect = document.getElementById('rsvpGuests');
+guestSelect.replaceChildren(...Array.from({length:guestLimit}, (_, index)=>{
+  const option = document.createElement('option');
+  option.value = String(index + 1);
+  option.textContent = String(index + 1);
+  return option;
+}));
+
+if(invitationGuest && !invitationGroup){
   const rsvpName = document.getElementById('rsvpName');
   rsvpName.value = invitationGuest;
 }
