@@ -167,12 +167,8 @@ body.envelope-locked{
   animation:idleFloat 3.4s ease-in-out infinite alternate;
 }
 .envelope.open{
-  animation:envelopeFadeOut 0.8s ease forwards;
+  animation:none;
   transform:perspective(1400px) rotateX(5deg);
-}
-@keyframes envelopeFadeOut{
-  from{ opacity:1; }
-  to{ opacity:0; }
 }
 @keyframes idleFloat{
   0%{ transform:perspective(1400px) rotateX(5deg) translateY(0); }
@@ -294,14 +290,6 @@ body.envelope-locked{
   0%{ translate:0 0; }
   100%{ translate:0 8px; }
 }
-.envelope.open .envelope-flower{
-  animation:flowerFadeOut 0.8s ease forwards;
-}
-@keyframes flowerFadeOut{
-  from{ opacity:1; }
-  to{ opacity:0; }
-}
-
 .seal{
   position:absolute;
   top:60%;
@@ -330,7 +318,7 @@ body.envelope-locked{
   display:block;
 }
 .envelope.open .seal{
-  transform:translate(-50%,-50%) scale(0.4) rotate(25deg);
+  transform:translate(-50%,-50%) scale(0.4);
   opacity:0;
 }
 
