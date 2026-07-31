@@ -230,9 +230,6 @@ body.envelope-locked{
     linear-gradient(165deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.04) 30%, rgba(0,0,0,0.02) 60%, rgba(0,0,0,0.12) 100%),
     var(--green-paper);
   clip-path:polygon(0 0, 100% 0, 50% 100%);
-  transform-origin:top;
-  transform:rotateX(0deg);
-  transition:transform 2.3s cubic-bezier(.32,.08,.2,1);
   filter:drop-shadow(0 3px 5px rgba(30,34,18,0.28));
   z-index:3;
 }
@@ -243,10 +240,6 @@ body.envelope-locked{
   background:linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 10%, transparent 22%);
   pointer-events:none;
 }
-.envelope.open .env-flap{
-  transform:rotateX(175deg);
-}
-
 .env-address{
   position:absolute;
   left:0; right:0;
@@ -2135,7 +2128,7 @@ function openEnvelope(){
     document.getElementById('envelopeScene').classList.add('hidden');
     document.getElementById('letterScene').classList.remove('hidden');
     typeLetterContents();
-  }, 1900);
+  }, 900);
 }
 
 function openLetter(){
