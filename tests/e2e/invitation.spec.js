@@ -173,9 +173,14 @@ test('group invitation gets a fresh ID while personal invitation stays stable', 
   expect(await page.evaluate(() => rsvpSubmissionId)).toBe(firstPersonalId);
 });
 
-test('decimal g falls back to four guests', async ({ page }) => {
+test('missing g defaults to two guests', async ({ page }) => {
+  await page.goto('/?to=Guest');
+  await expect(page.locator('#rsvpGuests option')).toHaveCount(2);
+});
+
+test('malformed g defaults to two guests', async ({ page }) => {
   await page.goto('/?to=Guest&g=2.5');
-  await expect(page.locator('#rsvpGuests option')).toHaveCount(4);
+  await expect(page.locator('#rsvpGuests option')).toHaveCount(2);
 });
 
 test('closed wishes panel cannot intercept taps', async ({ page }) => {
