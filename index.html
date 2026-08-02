@@ -930,14 +930,16 @@ body:has(.invite.show){scroll-snap-type:y mandatory;}
   animation:heroScrollFadeIn 1s ease-out 2s both, heroScrollBounce 2s ease-in-out 3s infinite;
 }
 .hero-scroll-cue svg{
-  width:20px;
-  height:20px;
+  width:28px;
+  height:28px;
   stroke:var(--olive);
-  opacity:0.6;
+  stroke-width:2;
+  opacity:0.9;
+  filter:drop-shadow(0 2px 3px rgba(30,40,22,0.28));
 }
 @keyframes heroScrollFadeIn{
   from{ opacity:0; }
-  to{ opacity:0.6; }
+  to{ opacity:0.9; }
 }
 @keyframes heroScrollBounce{
   0%,100%{ transform:translateX(-50%) translateY(0); }
