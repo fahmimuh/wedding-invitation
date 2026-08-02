@@ -181,6 +181,26 @@ test('malformed g defaults to two guests', async ({ page }) => {
   await expect(page.locator('#rsvpGuests option')).toHaveCount(2);
 });
 
+test('mobile couple and parent pairs share fitted one-line sizes', async ({ page }) => {
+  await page.goto('/');
+  for (const width of [320, 430]) {
+    await page.setViewportSize({ width, height: 812 });
+    await page.evaluate(() => fitIntroText());
+    for (const selector of ['.section-intro .person-name', '.section-intro .person-parents']) {
+      const metrics = await page.locator(selector).evaluateAll(elements => elements.map(element => ({
+        fontSize: getComputedStyle(element).fontSize,
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        height: element.getBoundingClientRect().height,
+        lineHeight: parseFloat(getComputedStyle(element).lineHeight)
+      })));
+      expect(new Set(metrics.map(metric => metric.fontSize)).size).toBe(1);
+      expect(metrics.every(metric => metric.scrollWidth <= metric.clientWidth)).toBe(true);
+      expect(metrics.every(metric => metric.height <= metric.lineHeight + 1)).toBe(true);
+    }
+  }
+});
+
 test('closed wishes panel cannot intercept taps', async ({ page }) => {
   await page.goto('/');
   const panel = page.locator('#messagesPanel');

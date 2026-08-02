@@ -2417,6 +2417,33 @@ if(invitationGuest && !invitationGroup){
   rsvpName.value = invitationGuest;
 }
 
+function fitIntroTextPair(selector, maxSize){
+  const elements = [...document.querySelectorAll(selector)];
+  if(window.innerWidth >= 1000){
+    elements.forEach(element => element.style.removeProperty('font-size'));
+    return;
+  }
+  elements.forEach(element => element.style.fontSize = maxSize + 'px');
+  const fittedSize = elements.reduce((size, element) => {
+    if(element.scrollWidth <= element.clientWidth) return size;
+    return Math.min(size, maxSize * element.clientWidth / element.scrollWidth);
+  }, maxSize);
+  let safeSize = Math.floor(fittedSize * 10) / 10;
+  elements.forEach(element => element.style.fontSize = safeSize + 'px');
+  while(safeSize > 8 && elements.some(element => element.scrollWidth > element.clientWidth)){
+    safeSize = Math.round((safeSize - 0.1) * 10) / 10;
+    elements.forEach(element => element.style.fontSize = safeSize + 'px');
+  }
+}
+
+function fitIntroText(){
+  fitIntroTextPair('.section-intro .person-name', 34);
+  fitIntroTextPair('.section-intro .person-parents', 13);
+}
+
+document.fonts.ready.then(fitIntroText);
+window.addEventListener('resize', fitIntroText);
+
 // Guest messages panel
 let messagesLoaded = false;
 let messagesLoading = null;
