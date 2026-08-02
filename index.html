@@ -2501,6 +2501,8 @@ function loadMessages(force = false){
   return messagesLoading;
 }
 
+loadMessages();
+
 async function submitRsvp(){
   const submitBtn = document.getElementById('rsvpSubmit');
   if(submitBtn.disabled) return;
